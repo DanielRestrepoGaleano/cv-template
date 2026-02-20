@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daniel Restrepo Galeano – CV</title>
+  <script src="https://unpkg.com/docx@7.7.0/build/index.js"></script>
+  <style>
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div
+    style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #222; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px;">
+
+    <!-- BOTONES DE DESCARGA -->
+    <div class="no-print" style="text-align: right; margin-bottom: 30px;">
+      <button onclick="descargarPDF()"
+        style="display: inline-block; padding: 8px 16px; margin-right: 10px; background-color: #1a1a1a; color: #ffffff; border: none; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer;">📄
+        Descargar PDF</button>
+      <button onclick="descargarWord()"
+        style="display: inline-block; padding: 8px 16px; background-color: #2b579a; color: #ffffff; border: none; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer;">📝
+        Descargar Word</button>
+    </div>
+
+    <!-- ENCABEZADO PRINCIPAL -->
+    <h1 style="font-size: 40px; letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase; font-weight: 700;">
+      Daniel Restrepo Galeano</h1>
+    <p style="font-size: 18px; margin-top: 0; color: #555; text-transform: uppercase; letter-spacing: 1px;">
+      Desarrollador
+      de Software</p>
+
+    <hr style="border: 0; border-top: 1px solid #eaeaea; margin: 30px 0;">
+
+    <!-- INICIO DE COLUMNAS -->
+    <table style="width: 100%; border: none; border-collapse: collapse; font-size: 14px;">
+      <tr>
+        <!-- COLUMNA IZQUIERDA (30%) -->
+        <td style="width: 30%; vertical-align: top; padding-right: 25px; border-right: 1px solid #eaeaea;">
+
+          <!-- DETALLES -->
+          <h3 style="text-transform: uppercase; letter-spacing: 1px; font-size: 16px; margin-bottom: 15px;">
+            Detalles
+            <div style="width: 30px; border-bottom: 2px solid #222; margin-top: 5px;"></div>
+          </h3>
+          <p style="margin-bottom: 5px; font-size: 12px;"><strong>DIRECCIÓN</strong><br>
+            <span style="color: #555;">Medellín<br>Colombia</span>
+          </p>
+          <p style="margin-bottom: 5px; font-size: 12px; margin-top: 15px;"><strong>TELÉFONO</strong><br>
+            <span style="color: #555;"></span>
+          </p>
+          <p style="margin-bottom: 30px; font-size: 12px; margin-top: 15px;"><strong>CORREO ELECTRÓNICO</strong><br>
+            <span style="color: #555;"></span>
+          </p>
+
+          <!-- ENLACES -->
+          <h3 style="text-transform: uppercase; letter-spacing: 1px; font-size: 16px; margin-bottom: 15px;">
+            Enlaces
+            <div style="width: 30px; border-bottom: 2px solid #222; margin-top: 5px;"></div>
+          </h3>
+          <p style="margin-bottom: 8px; font-size: 13px;"><a href="https://github.com/DanielRestrepoGaleano"
+              style="color: #222; text-decoration: underline;">Github</a></p>
+          <p style="margin-bottom: 8px; font-size: 13px;"><a href="https://www.instagram.com/daniel_restrepo_galeano/"
+              style="color: #222; text-decoration: underline;">Instagram</a></p>
+          <p style="margin-bottom: 30px; font-size: 13px;"><a
+              href="https://www.linkedin.com/in/daniel-restrepo-galeano/"
+              style="color: #222; text-decoration: underline;">LinkedIn</a></p>
+
+          <!-- HABILIDADES -->
+          <h3 style="text-transform: uppercase; letter-spacing: 1px; font-size: 16px; margin-bottom: 15px;">
+            Habilidades
+            <div style="width: 30px; border-bottom: 2px solid #222; margin-top: 5px;"></div>
+          </h3>
+          <div style="margin-bottom: 15px;">
+            <p style="margin-bottom: 5px; font-size: 13px; color: #444;">Lenguajes de Programación:<br>
+              <strong>Java (Spring Boot), PHP, SQL, JavaScript, Dart (Flutter).</strong>
+            </p>
+            <div style="height: 4px; background-color: #222; width: 100%; margin-top: 5px;"></div>
+          </div>
+          <div style="margin-bottom: 15px;">
+            <p style="margin-bottom: 5px; font-size: 13px; color: #444;">RPA &amp; IA:<br>
+              <strong>PIX RPA, Botpress, Integración de LLMs (Groq Cloud API).</strong>
+            </p>
+            <div style="height: 4px; background-color: #222; width: 100%; margin-top: 5px;"></div>
+          </div>
+          <div style="margin-bottom: 15px;">
+            <p style="margin-bottom: 5px; font-size: 13px; color: #444;">Bases de Datos:<br>
+              <strong>MySQL (HeidiSQL, CLI), Supabase, PostgreSQL.</strong>
+            </p>
+            <div style="height: 4px; background-color: #222; width: 100%; margin-top: 5px;"></div>
+          </div>
+          <div style="margin-bottom: 15px;">
+            <p style="margin-bottom: 5px; font-size: 13px; color: #444;">Herramientas &amp; Deployment:<br>
+              <strong>Git/GitHub, Docker (Containerización), Brevo API (SMTP), Netlify, Render, Windows CMD /
+                Bash.</strong>
+            </p>
+            <div style="height: 4px; background-color: #222; width: 100%; margin-top: 5px;"></div>
+          </div>
+          <div style="margin-bottom: 15px;">
+            <p style="margin-bottom: 5px; font-size: 13px; color: #444;">Habilidades Blandas:<br>
+              <strong>Levantamiento de Requisitos, Documentación Técnica (UML), Resolución de Problemas, Mentoría de
+                Equipos.</strong>
+            </p>
+            <div style="height: 4px; background-color: #222; width: 100%; margin-top: 5px;"></div>
+          </div>
+
+        </td>
+
+        <!-- COLUMNA DERECHA (70%) -->
+        <td style="width: 70%; vertical-align: top; padding-left: 30px;">
+
+          <!-- PERFIL -->
+          <h3 style="text-transform: uppercase; letter-spacing: 1px; font-size: 16px; margin-bottom: 15px;">
+            Perfil
+            <div style="width: 30px; border-bottom: 2px solid #222; margin-top: 5px;"></div>
+          </h3>
+          <p style="color: #444; margin-bottom: 40px; text-align: justify;">Desarrollador de software cursando 6to
+            semestre de Tecnología en Desarrollo de Software en la Uniremington. Experiencia en el ciclo de vida
+            completo
+            de desarrollo, con especialidad en Java (Spring Boot), PHP, Automatización RPA (PIX RPA) y botpress.
+            Capacidad
+            comprobada para entregar soluciones de negocio funcionales, desde sistemas de gestión de inventarios hasta
+            plataformas para organizaciones médicas. Experto en el levantamiento de requerimientos con clientes
+            (Stakeholders) y en la traducción de necesidades de negocio a arquitecturas técnicas escalables.</p>
+
+          <!-- EXPERIENCIA LABORAL -->
+          <h3 style="text-transform: uppercase; letter-spacing: 1px; font-size: 16px; margin-bottom: 15px;">
+            Experiencia Laboral
+            <div style="width: 30px; border-bottom: 2px solid #222; margin-top: 5px;"></div>
+          </h3>
+
+          <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 2px; font-size: 15px;"><strong>Desarrollador Fullstack | MotoClub (Sistema de
+                Inventario y Caja)</strong> <span style="float: right; font-size: 13px;">Medellín</span></p>
+            <p style="margin-top: 0; font-size: 12px; color: #666; margin-bottom: 10px;"><em>Jul 2025 — Abr 2026</em>
+            </p>
+            <p style="margin-bottom: 8px; color: #444;">Co-desarrollo y despliegue de un sistema integral de gestión de
+              ventas e inventario para taller de motocicletas.</p>
+            <ul style="margin-top: 0; padding-left: 20px; color: #444; font-size: 13px;">
+              <li style="margin-bottom: 4px;">Optimización del control de repuestos y mejora en la trazabilidad de
+                productos, eliminando errores de registro manual en un 100%.</li>
+              <li style="margin-bottom: 4px;">Gestión del proceso completo de despliegue, incluyendo normalización de
+                base
+                de datos (MySQL) y configuración de servidores.</li>
+              <li>Estado: Sistema actualmente en producción y generando facturación activa.</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 40px;">
+            <p style="margin-bottom: 2px; font-size: 15px;"><strong>Líder de Proyecto y Desarrollador de Software |
+                SintraIPSU (Sindicato Médico)</strong> <span style="float: right; font-size: 13px;">Medellín</span></p>
+            <p style="margin-top: 0; font-size: 12px; color: #666; margin-bottom: 10px;"><em>Feb 2026</em></p>
+            <p style="margin-bottom: 8px; color: #444;">Liderazgo del rediseño arquitectónico y mantenimiento del
+              sistema
+              de gestión sindical.</p>
+            <ul style="margin-top: 0; padding-left: 20px; color: #444; font-size: 13px;">
+              <li style="margin-bottom: 4px;">Ejecución profesional de levantamiento de requerimientos para la migración
+                de sistemas legacy en PHP hacia arquitecturas modernas y seguras.</li>
+              <li style="margin-bottom: 4px;">Rediseño de módulos de Afiliados y sistema de PQRS, con enfoque en
+                seguridad
+                de datos y experiencia de usuario (UX).</li>
+              <li>Implementación de flujos automatizados para la generación de reportes y validación de documentos.</li>
+            </ul>
+          </div>
+
+          <!-- EDUCACIÓN -->
+          <h3 style="text-transform: uppercase; letter-spacing: 1px; font-size: 16px; margin-bottom: 15px;">
+            Educación
+            <div style="width: 30px; border-bottom: 2px solid #222; margin-top: 5px;"></div>
+          </h3>
+          <div style="margin-bottom: 15px;">
+            <p style="margin-bottom: 2px; font-size: 15px;"><strong>Tecnología en Desarrollo de Software</strong></p>
+            <p style="margin-top: 0; font-size: 13px; color: #666;">Corporación Universitaria Remington, Medellín |
+              <em>Ago 2023</em>
+            </p>
+          </div>
+          <div style="margin-bottom: 40px;">
+            <p style="margin-bottom: 2px; font-size: 15px;"><strong>Técnico en Desarrollo de Software</strong></p>
+            <p style="margin-top: 0; font-size: 13px; color: #666;">Medellín | <em>Ago 2020 – Nov 2022</em></p>
+          </div>
+
+          <!-- INTERCAMBIOS -->
+          <h3 style="text-transform: uppercase; letter-spacing: 1px; font-size: 16px; margin-bottom: 15px;">
+            Intercambios
+            <div style="width: 30px; border-bottom: 2px solid #222; margin-top: 5px;"></div>
+          </h3>
+          <div style="margin-bottom: 40px;">
+            <p style="margin-bottom: 2px; font-size: 15px;"><strong>Intercambio Cultural Estudiantil | Puebla,
+                México</strong></p>
+            <p style="margin-top: 0; font-size: 12px; color: #666; margin-bottom: 10px;"><em>Nov 2022 – Dic 2022</em>
+            </p>
+            <ul style="margin-top: 0; padding-left: 20px; color: #444; font-size: 13px;">
+              <li style="margin-bottom: 4px;">Experiencia de inmersión cultural y académica, enfocada en el desarrollo
+                de
+                habilidades de adaptabilidad, resolución de problemas en entornos nuevos y comunicación intercultural.
+              </li>
+              <li style="margin-bottom: 4px;">Estancia internacional independiente que fortaleció habilidades de
+                adaptabilidad, autogestión y resolución de conflictos en entornos de alta complejidad.</li>
+              <li>Capacidad demostrada para mantener la toma de decisiones asertiva en situaciones imprevistas y
+                entornos
+                multiculturales.</li>
+            </ul>
+          </div>
+
+          <!-- CURSOS -->
+          <h3 style="text-transform: uppercase; letter-spacing: 1px; font-size: 16px; margin-bottom: 15px;">
+            Cursos
+            <div style="width: 30px; border-bottom: 2px solid #222; margin-top: 5px;"></div>
+          </h3>
+          <ul style="margin-top: 0; padding-left: 20px; color: #444; font-size: 14px; line-height: 1.8;">
+            <li><strong>Diploma – English for Artificial Intelligence</strong>, Platzi (<em>Jun 2023</em>)</li>
+            <li><strong>Certificación Fundamental PIX RPA</strong> (<em>Feb 2026</em>)</li>
+            <li><strong>Bootcamp de Especialización RPA | PIX</strong> (<em>Programado para Mar 2026</em>)</li>
+          </ul>
+
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <script>
+    // ── PDF ───────────────────────────────────────────────────────────────────
+    function descargarPDF() {
+      window.print();
+    }
+
+    // ── WORD (docx.js via CDN) ────────────────────────────────────────────────
+    async function descargarWord() {
+      const {
+        Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+        AlignmentType, WidthType, BorderStyle, LevelFormat, ExternalHyperlink, UnderlineType
+      } = docx;
+
+      const FONT = "Arial";
+      const C_DARK = "222222";
+      const C_GRAY = "555555";
+      const C_LIGHT = "666666";
+      const C_BODY = "444444";
+      const NO_BORDER = { style: BorderStyle.NONE, size: 0, color: "FFFFFF" };
+      const DIV_BORDER = { style: BorderStyle.SINGLE, size: 4, color: "EAEAEA" };
+
+      // Encabezado de sección
+      const secHeading = (text) => new Paragraph({
+        spacing: { before: 280, after: 80 },
+        border: { bottom: { style: BorderStyle.SINGLE, size: 8, color: C_DARK, space: 4 } },
+        children: [new TextRun({ text: text.toUpperCase(), bold: true, size: 22, font: FONT, color: C_DARK, characterSpacing: 40 })]
+      });
+
+      // Etiqueta negrita
+      const lbl = (text) => new Paragraph({
+        spacing: { before: 140, after: 20 },
+        children: [new TextRun({ text, bold: true, size: 18, font: FONT, color: C_DARK, allCaps: true })]
+      });
+
+      // Texto cuerpo
+      const body = (text, extra = {}) => new Paragraph({
+        spacing: { before: 0, after: 60 },
+        children: [new TextRun({ text, size: 19, font: FONT, color: C_GRAY, ...extra })]
+      });
+
+      // Título de trabajo
+      const jobTitle = (title, loc) => new Paragraph({
+        spacing: { before: 160, after: 20 },
+        children: [
+          new TextRun({ text: title, bold: true, size: 21, font: FONT, color: C_DARK }),
+          new TextRun({ text: loc ? "   " + loc : "", size: 19, font: FONT, color: C_LIGHT }),
+        ]
+      });
+
+      // Fecha en itálica
+      const dateP = (text) => new Paragraph({
+        spacing: { before: 0, after: 60 },
+        children: [new TextRun({ text, italics: true, size: 18, font: FONT, color: C_LIGHT })]
+      });
+
+      // Ítem de lista
+      const bullet = (text) => new Paragraph({
+        numbering: { reference: "cv-bullets", level: 0 },
+        spacing: { before: 40, after: 40 },
+        children: [new TextRun({ text, size: 19, font: FONT, color: C_BODY })]
+      });
+
+      // Enlace externo
+      const link = (label, url) => new Paragraph({
+        spacing: { before: 40, after: 40 },
+        children: [new ExternalHyperlink({
+          link: url,
+          children: [new TextRun({ text: label, size: 19, font: FONT, color: "2b579a", underline: { type: UnderlineType.SINGLE } })]
+        })]
+      });
+
+      // Bloque de habilidad con línea inferior
+      const skill = (cat, val) => [
+        new Paragraph({
+          spacing: { before: 80, after: 20 },
+          children: [
+            new TextRun({ text: cat + ": ", size: 18, font: FONT, color: C_BODY }),
+            new TextRun({ text: val, bold: true, size: 18, font: FONT, color: C_DARK }),
+          ]
+        }),
+        new Paragraph({
+          border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: C_DARK, space: 2 } },
+          spacing: { before: 0, after: 60 },
+          children: [new TextRun("")]
+        })
+      ];
+
+      // Espacio entre secciones
+      const gap = () => new Paragraph({ spacing: { before: 180, after: 0 }, children: [new TextRun("")] });
+
+      // ── Columna izquierda ─────────────────────────────────────────────────
+      const leftCol = [
+        secHeading("Detalles"),
+        lbl("Dirección"),
+        body("Medellín, Colombia"),
+        lbl("Teléfono"),
+        body("3104462564"),
+        lbl("Correo Electrónico"),
+        body("danielrestrepogaleano@gmail.com"),
+        gap(),
+        secHeading("Enlaces"),
+        link("Github", "https://github.com/DanielRestrepoGaleano"),
+        link("Instagram", "https://www.instagram.com/daniel_restrepo_galeano/"),
+        link("LinkedIn", "https://www.linkedin.com/in/daniel-restrepo-galeano/"),
+        gap(),
+        secHeading("Habilidades"),
+        ...skill("Lenguajes de Programación", "Java (Spring Boot), PHP, SQL, JavaScript, Dart (Flutter)."),
+        ...skill("RPA & IA", "PIX RPA, Botpress, Integración de LLMs (Groq Cloud API)."),
+        ...skill("Bases de Datos", "MySQL (HeidiSQL, CLI), Supabase, PostgreSQL."),
+        ...skill("Herramientas & Deployment", "Git/GitHub, Docker (Containerización), Brevo API (SMTP), Netlify, Render, Windows CMD / Bash."),
+        ...skill("Habilidades Blandas", "Levantamiento de Requisitos, Documentación Técnica (UML), Resolución de Problemas, Mentoría de Equipos."),
+      ];
+
+      // ── Columna derecha ───────────────────────────────────────────────────
+      const rightCol = [
+        secHeading("Perfil"),
+        new Paragraph({
+          spacing: { before: 0, after: 240 },
+          alignment: AlignmentType.JUSTIFIED,
+          children: [new TextRun({
+            text: "Desarrollador de software cursando 6to semestre de Tecnología en Desarrollo de Software en la Uniremington. Experiencia en el ciclo de vida completo de desarrollo, con especialidad en Java (Spring Boot), PHP, Automatización RPA (PIX RPA) y botpress. Capacidad comprobada para entregar soluciones de negocio funcionales, desde sistemas de gestión de inventarios hasta plataformas para organizaciones médicas. Experto en el levantamiento de requerimientos con clientes (Stakeholders) y en la traducción de necesidades de negocio a arquitecturas técnicas escalables.",
+            size: 19, font: FONT, color: C_BODY
+          })]
+        }),
+
+        secHeading("Experiencia Laboral"),
+        jobTitle("Desarrollador Fullstack | MotoClub (Sistema de Inventario y Caja)", "Medellín"),
+        dateP("Jul 2025 — Abr 2026"),
+        body("Co-desarrollo y despliegue de un sistema integral de gestión de ventas e inventario para taller de motocicletas."),
+        bullet("Optimización del control de repuestos y mejora en la trazabilidad de productos, eliminando errores de registro manual en un 100%."),
+        bullet("Gestión del proceso completo de despliegue, incluyendo normalización de base de datos (MySQL) y configuración de servidores."),
+        bullet("Estado: Sistema actualmente en producción y generando facturación activa."),
+        gap(),
+        jobTitle("Líder de Proyecto y Desarrollador de Software | SintraIPSU (Sindicato Médico)", "Medellín"),
+        dateP("Feb 2026"),
+        body("Liderazgo del rediseño arquitectónico y mantenimiento del sistema de gestión sindical."),
+        bullet("Ejecución profesional de levantamiento de requerimientos para la migración de sistemas legacy en PHP hacia arquitecturas modernas y seguras."),
+        bullet("Rediseño de módulos de Afiliados y sistema de PQRS, con enfoque en seguridad de datos y experiencia de usuario (UX)."),
+        bullet("Implementación de flujos automatizados para la generación de reportes y validación de documentos."),
+        gap(),
+
+        secHeading("Educación"),
+        new Paragraph({ spacing: { before: 80, after: 20 }, children: [new TextRun({ text: "Tecnología en Desarrollo de Software", bold: true, size: 21, font: FONT, color: C_DARK })] }),
+        body("Corporación Universitaria Remington, Medellín  |  Ago 2023"),
+        new Paragraph({ spacing: { before: 100, after: 20 }, children: [new TextRun({ text: "Técnico en Desarrollo de Software", bold: true, size: 21, font: FONT, color: C_DARK })] }),
+        body("Medellín  |  Ago 2020 – Nov 2022"),
+        gap(),
+
+        secHeading("Intercambios"),
+        jobTitle("Intercambio Cultural Estudiantil | Puebla, México", ""),
+        dateP("Nov 2022 – Dic 2022"),
+        bullet("Experiencia de inmersión cultural y académica, enfocada en el desarrollo de habilidades de adaptabilidad, resolución de problemas en entornos nuevos y comunicación intercultural."),
+        bullet("Estancia internacional independiente que fortaleció habilidades de adaptabilidad, autogestión y resolución de conflictos en entornos de alta complejidad."),
+        bullet("Capacidad demostrada para mantener la toma de decisiones asertiva en situaciones imprevistas y entornos multiculturales."),
+        gap(),
+
+        secHeading("Cursos"),
+        bullet("Diploma – English for Artificial Intelligence, Platzi (Jun 2023)"),
+        bullet("Certificación Fundamental PIX RPA (Feb 2026)"),
+        bullet("Bootcamp de Especialización RPA | PIX (Programado para Mar 2026)"),
+      ];
+
+      // ── Tabla de dos columnas ─────────────────────────────────────────────
+      const layoutTable = new Table({
+        width: { size: 9360, type: WidthType.DXA },
+        columnWidths: [2700, 6660],
+        borders: { top: NO_BORDER, bottom: NO_BORDER, left: NO_BORDER, right: NO_BORDER, insideH: NO_BORDER, insideV: NO_BORDER },
+        rows: [
+          new TableRow({
+            children: [
+              new TableCell({
+                width: { size: 2700, type: WidthType.DXA },
+                borders: { top: NO_BORDER, bottom: NO_BORDER, left: NO_BORDER, right: DIV_BORDER },
+                margins: { top: 0, bottom: 0, left: 0, right: 280 },
+                children: leftCol,
+              }),
+              new TableCell({
+                width: { size: 6660, type: WidthType.DXA },
+                borders: { top: NO_BORDER, bottom: NO_BORDER, right: NO_BORDER, left: DIV_BORDER },
+                margins: { top: 0, bottom: 0, left: 360, right: 0 },
+                children: rightCol,
+              }),
+            ]
+          })
+        ]
+      });
+
+      // ── Documento ─────────────────────────────────────────────────────────
+      const doc = new Document({
+        numbering: {
+          config: [{
+            reference: "cv-bullets",
+            levels: [{
+              level: 0, format: LevelFormat.BULLET, text: "•", alignment: AlignmentType.LEFT,
+              style: { paragraph: { indent: { left: 360, hanging: 200 } } }
+            }]
+          }]
+        },
+        sections: [{
+          properties: {
+            page: {
+              size: { width: 11906, height: 16838 }, // A4
+              margin: { top: 800, right: 800, bottom: 800, left: 800 }
+            }
+          },
+          children: [
+            // Nombre
+            new Paragraph({
+              spacing: { before: 0, after: 60 },
+              children: [new TextRun({ text: "DANIEL RESTREPO GALEANO", bold: true, size: 56, font: FONT, color: C_DARK, characterSpacing: 40 })]
+            }),
+            // Subtítulo
+            new Paragraph({
+              spacing: { before: 0, after: 160 },
+              children: [new TextRun({ text: "DESARROLLADOR DE SOFTWARE", size: 26, font: FONT, color: C_GRAY, characterSpacing: 20 })]
+            }),
+            // Línea divisora
+            new Paragraph({
+              border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: "EAEAEA", space: 6 } },
+              spacing: { before: 0, after: 180 },
+              children: [new TextRun("")]
+            }),
+            // Cuerpo en dos columnas
+            layoutTable,
+          ]
+        }]
+      });
+
+      // ── Descarga ──────────────────────────────────────────────────────────
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Daniel_Restrepo_Galeano_CV.docx";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+
+</body>
+
+</html>
