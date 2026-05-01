@@ -362,7 +362,7 @@ function renderCV() {
         <td class="cv-left">
           <h3 class="cv-sec-title">${escHtml(sec.detalles)}<div class="cv-underline"></div></h3>
 
-          <p class="cv-detail"><strong>${ui.emailCvLbl === 'EMAIL' ? 'ADDRESS' : 'DIRECCIÓN'}</strong><br>
+          <p class="cv-detail"><strong>${escHtml(ui.addressCvLbl)}</strong><br>
             <span class="cv-detail-val">${addressLines}</span></p>
           <p class="cv-detail"><strong>${escHtml(ui.form.telefono).toUpperCase()}</strong><br>
             <span class="cv-detail-val">${escHtml(d.contacto.telefono)}</span></p>
@@ -491,10 +491,10 @@ async function descargarWord() {
   /* ── Build left column ─────────────────────────────────────────────────── */
   const leftCol = [
     secHeading(sec.detalles),
-    lbl(currentLang === 'es' ? 'Dirección' : 'Address'),
+    lbl(ui.addressCvLbl),
     // Address lines become separate paragraphs
     ...d.contacto.direccion.split('\n').filter(l => l.trim()).map(l => body(l.trim())),
-    lbl(currentLang === 'es' ? 'Teléfono' : 'Phone'),
+    lbl(ui.form.telefono.toUpperCase()),
     body(d.contacto.telefono),
     lbl(ui.emailCvLbl),
     body(d.contacto.email),

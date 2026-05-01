@@ -53,6 +53,7 @@ const uiLabels = {
       reset:         '↺ Restablecer'
     },
     confirmarReset: '¿Restablecer todos los datos de ejemplo? Se perderán los cambios no guardados.',
+    addressCvLbl: 'DIRECCIÓN',
     emailCvLbl: 'CORREO ELECTRÓNICO'
   },
 
@@ -107,6 +108,7 @@ const uiLabels = {
       reset:         '↺ Reset'
     },
     confirmarReset: 'Reset all data to example defaults? Unsaved changes will be lost.',
+    addressCvLbl: 'ADDRESS',
     emailCvLbl: 'EMAIL'
   }
 };
