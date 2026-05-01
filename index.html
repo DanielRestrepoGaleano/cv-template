@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" id="html-root">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV Builder</title>
+  <!-- Word generation library via CDN -->
+  <script src="https://unpkg.com/docx@7.7.0/build/index.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ── TOOLBAR (hidden on print) ──────────────────────────────────────── -->
+  <header class="toolbar no-print" id="toolbar">
+    <span class="toolbar-brand">📄 CV Builder</span>
+    <div class="toolbar-actions">
+      <button id="btn-toggle-editor" class="btn btn-secondary" onclick="toggleEditor()">◀ Editor</button>
+      <button id="btn-lang"          class="btn btn-lang"      onclick="toggleLang()">🌐 ES → EN</button>
+      <button id="btn-pdf"           class="btn btn-pdf"       onclick="descargarPDF()">📄 Descargar PDF</button>
+      <button id="btn-word"          class="btn btn-word"      onclick="descargarWord()">📝 Descargar Word</button>
+      <button id="btn-reset"         class="btn btn-reset"     onclick="resetData()" title="Restablecer">↺ Restablecer</button>
+    </div>
+  </header>
+
+  <!-- ── MAIN LAYOUT ────────────────────────────────────────────────────── -->
+  <div class="app-container">
+
+    <!-- Left: Edit panel (hidden on print) -->
+    <aside class="editor-panel no-print" id="editor-panel">
+      <div id="form-container"></div>
+    </aside>
+
+    <!-- Right: CV preview / printable area -->
+    <main class="cv-panel" id="cv-panel">
+      <div class="cv-preview-wrapper">
+        <div id="cv-preview" class="cv-preview"></div>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+
+</body>
+
+</html>

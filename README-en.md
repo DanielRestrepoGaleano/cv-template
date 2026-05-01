@@ -2,128 +2,119 @@
 
 Welcome to the ultimate Resume/CV template for developers!
 
-This template was born from a common frustration: **being tired of using resume builder platforms and websites that make you waste hours filling out forms, force you to sign up, and ultimately hit you with a paywall just to download your own document.**
+This template was born from a common frustration: **being tired of resume builder platforms that waste your time, force you to sign up, and hit you with a paywall just to download your own document.**
 
 Here, you have total control. Your data is yours, the code is yours, and exports are unlimited and free.
 
 ## ✨ Features
 
 - 🆓 **100% Free and Open Source:** No sign-ups, no watermarks, no paywalls.
-- 🎨 **Clean & Modern Design:** Two-column layout, highly readable typography, and a minimalist style.
-- 🖨️ **Native PDF Export:** Uses your browser's print functionality, automatically hiding download buttons thanks to CSS (`@media print`).
-- 📝 **Word (.docx) Export:** Direct integration with `docx.js` to generate a structured, fully editable Word file with a single click.
-- 🛠️ **No Heavy Dependencies:** A single `index.html` file (using a CDN for the Word library). No Node.js, npm, or complex setup required to get started.
+- 🎨 **Clean & Modern Design:** Two-column layout, readable typography, and a minimalist style.
+- ✍️ **Graphical Editing Interface:** A side panel with a form where you fill in your data — no code editing required.
+- 👁️ **Real-Time Preview:** Every keystroke in the form instantly updates the CV preview.
+- 💾 **Auto-Save in the Browser:** Your data is automatically saved to `localStorage`. Close the tab and come back — everything is still there.
+- 🌐 **Bilingual (ES / EN):** A single button switches the entire interface language. You can maintain an independent Spanish and English version of your CV.
+- 🖨️ **Native PDF Export:** Uses the browser's print function; the editing panel is automatically hidden.
+- 📝 **One-Click Word (.docx) Export:** Generates the `.docx` file by reading directly from the form. The filename is created automatically from your name.
+- 🛠️ **No Heavy Dependencies:** Four static files (`index.html`, `style.css`, `data.js`, `app.js`). No Node.js, npm, or server required.
 
 ---
 
 ## 🚀 Getting Started (Quick Guide)
 
-1. **Download the file:** Clone this repository or simply download the `index.html` file.
-2. **Open it in your browser:** Double-click the `index.html` file to see what the CV looks like.
-3. **Ask the template for help:** Click the orange `❓ Ayuda / Help` button in the top right corner to read the quick instructions.
-4. **Edit the code:** Open the file in your favorite code editor (VS Code, Sublime Text, Notepad++, etc.) and replace the generic placeholder data with your own.
+1. **Download the project:** Clone the repository or download `index.html`, `style.css`, `data.js`, and `app.js` into the same folder.
+2. **Open `index.html` in your browser:** Double-click it to see the app with pre-loaded example data.
+3. **Fill in the form:** The left panel contains fields for your name, profession, contact info, experience, education, and skills. The preview updates instantly.
+4. **Switch languages** with the **🌐 EN → ES** button to edit the Spanish version of your CV.
+5. **Export** using the buttons in the top toolbar when you're ready.
 
 ---
 
 ## ✏️ How to Edit Your Information
 
-**⚠️ IMPORTANT:** This template generates the Web/PDF layout and the Word file separately. Therefore, **you must update your information in TWO different places** within the `index.html` file.
+No code editing needed. All your information is managed from the **left side panel**:
 
-### Step 1: Edit the HTML (For Web View and PDF)
+| Section              | What to enter                                                                  |
+|----------------------|--------------------------------------------------------------------------------|
+| **Name / Profession**| Your full name and your job title or specialty.                                |
+| **Contact**          | Address, phone number, and email.                                              |
+| **Links**            | Label and URL for your profiles (GitHub, LinkedIn, portfolio, etc.).           |
+| **Profile**          | Professional summary in 3–5 lines.                                             |
+| **Experience**       | Role, company, period, description, and achievements (one per line).           |
+| **Education**        | Degree, institution, and period for each entry.                                |
+| **Skills**           | Category and technologies/tools (e.g. "Frontend: React, Vue, CSS").            |
+| **Certifications**   | Course name, issuing entity, and date.                                         |
 
-Look in the first half of the file (inside the `<body>` tag). The code is heavily commented so you can easily find each section:
-
-```html
-<!-- MAIN HEADER -->
-<h1 style="...">Your Full Name</h1>
-<p style="...">Your Profession</p>
-
-<!-- START OF COLUMNS -->
-<!-- LEFT COLUMN (30%) -->
-<!-- Your contact info, links, and skills go here -->
-
-<!-- RIGHT COLUMN (70%) -->
-<!-- Your profile, work experience, education, and courses go here -->
-```
-
-Just change the placeholder text to your real data. You can add or remove experience blocks by copying, pasting, or deleting the corresponding `<div>` tags.
-
-### Step 2: Edit the JavaScript (For Word Export)
-
-For the "Download Word" button to work correctly with your real data, scroll down to the bottom of the file, inside the `<script>` tag.
-
-There you will find variables and arrays that build the Word document. You need to replace the hardcoded generic data with yours:
-
-1. **Update the Left Column:** Find the `const leftCol = [...]` variable and modify the text strings:
-   ```javascript
-   const leftCol = [
-     secHeading("Details"),
-     lbl("Address"),
-     body("Your City, Your Country"), // <- Change this
-     lbl("Phone"),
-     body("Your Phone Number"), // <- Change this
-     // ...
-   ];
-   ```
-
-2. **Update the Right Column:** Find the `const rightCol = [...]` variable and modify your profile, experience, and education:
-   ```javascript
-   const rightCol = [
-     secHeading("Professional Profile"),
-     // Modify your professional summary text
-     new Paragraph({ ... text: "Your professional summary here..." }), 
-     
-     secHeading("Work Experience / Projects"),
-     jobTitle("Your Role | Company", "City"),
-     dateP("Month Year — Month Year"),
-     body("Short description..."),
-     bullet("Achievement 1..."),
-     bullet("Achievement 2..."),
-     // ...
-   ];
-   ```
-
-3. **Update the Word Document Header:** Near the end of the script, find where `doc = new Document({...})` is configured and change the main title:
-   ```javascript
-   new TextRun({ text: "YOUR FULL NAME", bold: true, ... }),
-   new TextRun({ text: "YOUR PROFESSION", size: 26, ... }),
-   ```
-
-4. **Change the download file name:** Find the final line where the download is triggered and put your name:
-   ```javascript
-   a.download = "Your_Name_CV.docx";
-   ```
+You can **add or remove entries** in each section using the `+` and `×` buttons.
 
 ---
 
-## 🖨️ Tips for PDF Export
+## 🌐 Language Switching
 
-When you click the **"Download PDF"** button, your browser's print dialog will open. For the best results:
+Click the **🌐 EN → ES** button in the top toolbar to toggle between English and Spanish.
 
-1. **Destination:** Select "Save as PDF".
-2. **Margins:** Select "None" or "Default" (adjust depending on how the preview looks).
-3. **Options:** Be sure to **uncheck** "Headers and footers" to prevent the date, URL, and page number injected by the browser from showing up on your CV.
+- Each language has its own **independent dataset**.
+- The form and CV preview switch to the selected language.
+- Both versions are saved simultaneously in `localStorage`.
 
-*(The download buttons are automatically hidden in the PDF thanks to the `.no-print` class set in the CSS).*
+---
+
+## 💾 Auto-Save
+
+There is no "Save" button. Every time you type in the form or add/remove an entry, the data is automatically saved to your browser's `localStorage`.
+
+To restore the **example data**, use the **↺ Reset** button in the toolbar.
+
+---
+
+## 🖨️ PDF Export Tips
+
+1. Click **📄 Download PDF** in the top toolbar.
+2. Your browser's print dialog will open.
+3. Select **"Save as PDF"** as the destination.
+4. In the advanced options, **uncheck "Headers and footers"** for a clean output.
+5. Adjust margins if necessary (recommended: "None" or "Default").
+
+The editing panel and toolbar are automatically hidden in the PDF.
+
+---
+
+## 📝 Word Export
+
+Click **📝 Download Word**. The file is generated instantly on the client side (no data is sent to any server) and downloaded as `YOUR_NAME_CV.docx`, built automatically from the form data.
+
+---
+
+## 🏗️ Project Structure
+
+```
+├── index.html   ← Main entry point (empty HTML shell + script references)
+├── style.css    ← All styles (toolbar, editor panel, CV preview, print)
+├── data.js      ← Data model: cvData (ES/EN) and bilingual UI labels
+├── app.js       ← Logic: renderCV(), renderForm(), localStorage, exports
+└── cv.html      ← Original single-file template (kept for reference)
+```
+
+**Single Source of Truth:** all CV information lives in the `cvData` object defined in `data.js` and edited through the form. Both the HTML preview and the Word document are generated by reading exactly the same object.
 
 ---
 
 ## 🛠️ Built With
 
-- **HTML5:** For document structure.
-- **Inline CSS:** Embedded styles to keep it a single file and guarantee portability.
-- **Vanilla JavaScript:** Basic functions to handle printing and downloading.
-- **[docx.js](https://docx.js.org/):** A powerful JavaScript library used via CDN (`unpkg.com`) to dynamically generate and download the `.docx` file entirely on the client side.
+- **HTML5 / CSS3:** Structure and styles in separate files.
+- **Vanilla JavaScript (ES6+):** No frameworks. DOM manipulation, `localStorage`, and dynamic generation.
+- **[docx.js](https://docx.js.org/):** `.docx` generation library loaded via CDN (`unpkg.com`), executed 100% on the client.
 
 ---
 
 ## 🤝 Contributing and License
 
-This project is **Public Domain / MIT License**. Feel free to clone it, modify it, adapt it to your needs, and share it with other developers or professionals who are tired of paying just to build a simple CV.
+This project is **Public Domain / MIT License**. Feel free to clone it, modify it, and share it.
 
-If you think you can improve the code (for example, by automating the JavaScript to read directly from the HTML DOM so users don't have to write their data twice), Pull Requests are completely welcome!
-
-We also accept ideas on how to make creating this CV easier for people who don't know how to code.
+Pull Requests are welcome. Some ideas for contributions:
+- New color palettes or design themes.
+- Support for additional languages.
+- Import/export of the JSON data object.
 
 ---
 *Built by developers, for developers. Best of luck in your job search!* 🚀

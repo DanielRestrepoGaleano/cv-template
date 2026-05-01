@@ -1,121 +1,112 @@
 ## ✨ Características
 
 - 🆓 **100% Gratuito y de Código Abierto:** Sin registros, sin marcas de agua, sin muros de pago.
-- 🎨 **Diseño Moderno y Limpio:** Estructura a dos columnas, tipografías legibles y un estilo minimalista.
-- 🖨️ **Exportación a PDF Nativa:** Utiliza la función de impresión del navegador, ocultando automáticamente los botones gracias a CSS (`@media print`).
-- 📝 **Exportación a Word (.docx):** Integración directa con `docx.js` para generar un archivo Word estructurado y editable con un solo clic.
-- 🛠️ **Sin dependencias pesadas:** Un solo archivo `index.html` (usa un CDN para la librería de Word). No requiere Node.js, npm, ni configuraciones complejas para empezar.
+- 🎨 **Diseño Moderno y Limpio:** Estructura a dos columnas, tipografías legibles y estilo minimalista.
+- ✍️ **Interfaz Gráfica de Edición:** Panel lateral con formulario donde rellenas tus datos sin tocar el código.
+- 👁️ **Vista Previa en Tiempo Real:** Cada vez que escribes en el formulario, el CV se actualiza instantáneamente.
+- 💾 **Autoguardado en el Navegador:** Tus datos se guardan automáticamente en el `localStorage`. Cierra la pestaña y vuelve: todo sigue ahí.
+- 🌐 **Bilingüe (ES / EN):** Un botón cambia el idioma de toda la interfaz. Puedes mantener una versión del CV en español y otra en inglés de forma independiente.
+- 🖨️ **Exportación a PDF Nativa:** Usa la función de impresión del navegador; el panel de edición se oculta automáticamente.
+- 📝 **Exportación a Word (.docx) con un clic:** Genera el archivo `.docx` leyendo directamente del formulario. El nombre del archivo se crea automáticamente con tu nombre.
+- 🛠️ **Sin dependencias pesadas:** Cuatro archivos estáticos (`index.html`, `style.css`, `data.js`, `app.js`). No requiere Node.js, npm ni servidor.
 
 ---
 
 ## 🚀 Cómo Empezar (Guía Rápida)
 
-1. **Descarga el archivo:** Clona este repositorio o simplemente descarga el archivo `index.html`.
-2. **Abre el archivo en tu navegador:** Haz doble clic en el archivo `index.html` para ver cómo luce el CV.
-3. **Pide Ayuda a la Plantilla:** Haz clic en el botón naranja `❓ Ayuda` de la esquina superior derecha para leer las instrucciones rápidas.
-4. **Edita el código:** Ábrelo en tu editor de código favorito (VS Code, Sublime Text, Notepad++, etc.) y reemplaza los datos genéricos de ejemplo por los tuyos.
+1. **Descarga el proyecto:** Clona el repositorio o descarga los archivos `index.html`, `style.css`, `data.js` y `app.js` en la misma carpeta.
+2. **Abre `index.html` en tu navegador:** Haz doble clic para ver la aplicación con datos de ejemplo precargados.
+3. **Rellena el formulario:** En el panel izquierdo encontrarás los campos para tu nombre, profesión, contacto, experiencia, educación y habilidades. La vista previa se actualiza al instante.
+4. **Cambia el idioma** con el botón **🌐 ES → EN** para editar la versión en inglés de tu CV.
+5. **Exporta** con los botones de la barra superior cuando estés listo.
 
 ---
 
 ## ✏️ Cómo Editar tu Información
 
-**⚠️ IMPORTANTE:** Esta plantilla genera el diseño web/PDF y el archivo Word de forma separada. Por lo tanto, **debes actualizar tu información en DOS lugares diferentes** dentro del archivo `index.html`.
+No es necesario editar ningún archivo de código. Toda la información se gestiona desde el **panel lateral izquierdo**:
 
-### Paso 1: Editar el HTML (Para la vista Web y el PDF)
+| Sección             | Qué ingresar                                                             |
+|---------------------|--------------------------------------------------------------------------|
+| **Nombre / Profesión** | Tu nombre completo y tu cargo o especialidad.                         |
+| **Contacto**        | Dirección, teléfono y correo electrónico.                                |
+| **Enlaces**         | Texto y URL de tus perfiles (GitHub, LinkedIn, portafolio, etc.).        |
+| **Perfil**          | Resumen profesional en 3-5 líneas.                                       |
+| **Experiencia**     | Cargo, empresa, período, descripción y logros (uno por línea).           |
+| **Educación**       | Título, institución y período de cada estudio.                           |
+| **Habilidades**     | Categoría y tecnologías/herramientas (ej. "Frontend: React, Vue, CSS").  |
+| **Certificaciones** | Nombre del curso, entidad y fecha.                                       |
 
-Busca en la primera mitad del archivo (dentro de la etiqueta `<body>`). El código está fuertemente comentado para que encuentres cada sección fácilmente:
-
-```html
-<!-- ENCABEZADO PRINCIPAL -->
-<h1 style="...">Tu Nombre Completo</h1>
-<p style="...">Tu Profesión</p>
-
-<!-- INICIO DE COLUMNAS -->
-<!-- COLUMNA IZQUIERDA (30%) -->
-<!-- Aquí va tu información de contacto, enlaces y habilidades -->
-
-<!-- COLUMNA DERECHA (70%) -->
-<!-- Aquí va tu perfil, experiencia laboral, educación y cursos -->
-```
-
-Solo debes cambiar el texto genérico por tus datos reales. Puedes añadir o eliminar bloques de experiencia copiando, pegando o borrando los `<div>` correspondientes.
-
-### Paso 2: Editar el JavaScript (Para la exportación a Word)
-
-Para que el botón de "Descargar Word" funcione correctamente con tus datos reales, debes bajar hasta el final del archivo, dentro de la etiqueta `<script>`. 
-
-Allí encontrarás variables y arrays que construyen el documento de Word. Debes reemplazar los datos genéricos (hardcoded) por los tuyos:
-
-1. **Actualiza la Columna Izquierda:** Busca la variable `const leftCol = [...]` y modifica las cadenas de texto:
-   ```javascript
-   const leftCol = [
-     secHeading("Detalles"),
-     lbl("Dirección"),
-     body("Tu Ciudad, Tu País"), // <- Cambia esto
-     lbl("Teléfono"),
-     body("Tu Teléfono"), // <- Cambia esto
-     // ...
-   ];
-   ```
-
-2. **Actualiza la Columna Derecha:** Busca la variable `const rightCol = [...]` y modifica tu perfil, experiencia y estudios:
-   ```javascript
-   const rightCol = [
-     secHeading("Perfil Profesional"),
-     // Modifica el texto de tu perfil profesional
-     new Paragraph({ ... text: "Tu resumen profesional aquí..." }), 
-     
-     secHeading("Experiencia Laboral / Proyectos"),
-     jobTitle("Tu Cargo | Empresa", "Ciudad"),
-     dateP("Mes Año — Mes Año"),
-     body("Descripción corta..."),
-     bullet("Logro 1..."),
-     bullet("Logro 2..."),
-     // ...
-   ];
-   ```
-
-3. **Actualiza el Encabezado del Documento Word:** Cerca del final del script, busca donde se configura el `doc = new Document({...})` y cambia el título principal:
-   ```javascript
-   new TextRun({ text: "TU NOMBRE COMPLETO", bold: true, ... }),
-   new TextRun({ text: "TU PROFESIÓN", size: 26, ... }),
-   ```
-
-4. **Cambia el nombre del archivo de descarga:** Busca la línea final donde se crea la descarga y pon tu nombre:
-   ```javascript
-   a.download = "Tu_Nombre_CV.docx";
-   ```
+Puedes **agregar o eliminar entradas** en cada sección con los botones `+` y `×`.
 
 ---
 
-## 🖨️ Consejos para la Exportación a PDF
+## 🌐 Cambio de Idioma
 
-Al hacer clic en el botón **"Descargar PDF"**, se abrirá la ventana de impresión de tu navegador. Para obtener los mejores resultados:
+Haz clic en el botón **🌐 ES → EN** en la barra superior para alternar entre español e inglés.
 
-1. **Destino:** Selecciona "Guardar como PDF".
-2. **Márgenes:** Selecciona "Ninguno" o "Predeterminado" (ajusta según lo veas en la vista previa).
-3. **Opciones:** Asegúrate de **desmarcar** "Encabezados y pies de página" para evitar que salga la fecha, la URL y el número de página que suele poner el navegador.
+- Cada idioma tiene su **propio conjunto de datos** independiente.
+- El formulario y la vista previa del CV cambian al idioma seleccionado.
+- Ambas versiones se guardan simultáneamente en el `localStorage`.
 
-*(El botón de descarga se oculta automáticamente en el PDF gracias a la clase `.no-print` configurada en el CSS).*
+---
+
+## 💾 Autoguardado
+
+No existe un botón "Guardar". Cada vez que escribes en el formulario o agregas/eliminas una entrada, los datos se guardan automáticamente en el `localStorage` de tu navegador.
+
+Si quieres volver a los **datos de ejemplo**, usa el botón **↺ Restablecer** en la barra superior.
+
+---
+
+## 🖨️ Exportación a PDF
+
+1. Haz clic en **📄 Descargar PDF** en la barra superior.
+2. Se abrirá el diálogo de impresión de tu navegador.
+3. Selecciona **"Guardar como PDF"** como destino.
+4. En las opciones avanzadas, **desmarca "Encabezados y pies de página"** para una presentación limpia.
+5. Ajusta los márgenes si es necesario (recomendado: "Ninguno" o "Predeterminado").
+
+El panel de edición y la barra de botones se ocultan automáticamente en el PDF.
+
+---
+
+## 📝 Exportación a Word
+
+Haz clic en **📝 Descargar Word**. El archivo se genera al instante en el cliente (sin enviar datos a ningún servidor) y se descarga con el nombre `TU_NOMBRE_CV.docx` formado automáticamente a partir de los datos del formulario.
+
+---
+
+## 🏗️ Estructura del Proyecto
+
+```
+├── index.html   ← Entrada principal (HTML vacío + referencias a los scripts)
+├── style.css    ← Todos los estilos (barra, panel editor, vista previa, print)
+├── data.js      ← Modelo de datos: cvData (ES/EN) y etiquetas de UI bilingües
+├── app.js       ← Lógica: renderCV(), renderForm(), localStorage, exportaciones
+└── cv.html      ← Archivo original (conservado como referencia)
+```
+
+**Fuente única de verdad:** toda la información del CV vive en el objeto `cvData` definido en `data.js` y editado a través del formulario. La vista previa HTML y el documento Word se generan leyendo exactamente el mismo objeto.
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
-- **HTML5:** Para la estructura del documento.
-- **CSS Inline:** Estilos incrustados para facilitar que sea un archivo único y garantizar su portabilidad.
-- **JavaScript Vanilla:** Funciones básicas para manejar la impresión y la descarga.
-- **[docx.js](https://docx.js.org/):** Una poderosa librería de JavaScript utilizada vía CDN (`unpkg.com`) para generar y descargar dinámicamente el archivo `.docx` directamente del lado del cliente.
+- **HTML5 / CSS3:** Estructura y estilos en archivos separados.
+- **JavaScript Vanilla (ES6+):** Sin frameworks. Manipulación del DOM, `localStorage` y generación dinámica.
+- **[docx.js](https://docx.js.org/):** Librería de generación de `.docx` cargada vía CDN (`unpkg.com`), ejecutada 100% en el cliente.
 
 ---
 
 ## 🤝 Contribuir y Licencia
 
-Este proyecto es de **dominio público / Licencia MIT**. Siéntete libre de clonarlo, modificarlo, adaptarlo a tus necesidades y compartirlo con otros desarrolladores o profesionales que estén cansados de pagar por hacer un simple CV.
+Este proyecto es de **dominio público / Licencia MIT**. Siéntete libre de clonarlo, modificarlo y compartirlo.
 
-Si crees que puedes mejorar el código (por ejemplo, automatizando que el JavaScript lea directamente del DOM del HTML para no tener que escribir los datos dos veces), ¡los *Pull Requests* son totalmente bienvenidos!
-
-También aceptamos ideas para facilitar la creación del CV para personas que no sepan de código.
+Los *Pull Requests* son bienvenidos. Algunas ideas para contribuir:
+- Nuevas paletas de color o temas de diseño.
+- Soporte para más idiomas.
+- Opción de importar/exportar el JSON de datos.
 
 ---
 *Hecho por desarrolladores, para desarrolladores. ¡Mucho éxito en tu búsqueda laboral!* 🚀
