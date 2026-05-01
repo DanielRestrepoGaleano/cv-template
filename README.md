@@ -1,11 +1,3 @@
-# 📄 Plantilla de CV para Desarrolladores (Gratis y Open Source)
-
-¡Bienvenido a la plantilla de Curriculum Vitae definitiva para desarrolladores! 
-
-Esta plantilla nace de una frustración común: **el cansancio de usar plataformas y páginas web de creación de CVs que te hacen perder horas llenando formularios, te obligan a registrarte y, al final, te imponen un muro de pago (paywall) para poder descargar tu propio documento.**
-
-Aquí tienes el control total. Tus datos son tuyos, el código es tuyo y las exportaciones son ilimitadas y gratuitas.
-
 ## ✨ Características
 
 - 🆓 **100% Gratuito y de Código Abierto:** Sin registros, sin marcas de agua, sin muros de pago.
@@ -20,7 +12,8 @@ Aquí tienes el control total. Tus datos son tuyos, el código es tuyo y las exp
 
 1. **Descarga el archivo:** Clona este repositorio o simplemente descarga el archivo `index.html`.
 2. **Abre el archivo en tu navegador:** Haz doble clic en el archivo `index.html` para ver cómo luce el CV.
-3. **Edita el código:** Ábrelo en tu editor de código favorito (VS Code, Sublime Text, Notepad++, etc.) y reemplaza los datos de ejemplo por los tuyos.
+3. **Pide Ayuda a la Plantilla:** Haz clic en el botón naranja `❓ Ayuda` de la esquina superior derecha para leer las instrucciones rápidas.
+4. **Edita el código:** Ábrelo en tu editor de código favorito (VS Code, Sublime Text, Notepad++, etc.) y reemplaza los datos genéricos de ejemplo por los tuyos.
 
 ---
 
@@ -45,13 +38,13 @@ Busca en la primera mitad del archivo (dentro de la etiqueta `<body>`). El códi
 <!-- Aquí va tu perfil, experiencia laboral, educación y cursos -->
 ```
 
-Solo debes cambiar el texto que está en español (o inglés) por tus datos reales. Puedes añadir o eliminar bloques de experiencia copiando y pegando los `<div>` correspondientes.
+Solo debes cambiar el texto genérico por tus datos reales. Puedes añadir o eliminar bloques de experiencia copiando, pegando o borrando los `<div>` correspondientes.
 
 ### Paso 2: Editar el JavaScript (Para la exportación a Word)
 
-Para que el botón de "Descargar Word" funcione correctamente con tus datos, debes bajar hasta el final del archivo, dentro de la etiqueta `<script>`. 
+Para que el botón de "Descargar Word" funcione correctamente con tus datos reales, debes bajar hasta el final del archivo, dentro de la etiqueta `<script>`. 
 
-Allí encontrarás variables y arrays que construyen el documento de Word. Debes reemplazar los datos quemados (hardcoded) por los tuyos:
+Allí encontrarás variables y arrays que construyen el documento de Word. Debes reemplazar los datos genéricos (hardcoded) por los tuyos:
 
 1. **Actualiza la Columna Izquierda:** Busca la variable `const leftCol = [...]` y modifica las cadenas de texto:
    ```javascript
@@ -68,11 +61,11 @@ Allí encontrarás variables y arrays que construyen el documento de Word. Debes
 2. **Actualiza la Columna Derecha:** Busca la variable `const rightCol = [...]` y modifica tu perfil, experiencia y estudios:
    ```javascript
    const rightCol = [
-     secHeading("Perfil"),
+     secHeading("Perfil Profesional"),
      // Modifica el texto de tu perfil profesional
      new Paragraph({ ... text: "Tu resumen profesional aquí..." }), 
      
-     secHeading("Experiencia Laboral"),
+     secHeading("Experiencia Laboral / Proyectos"),
      jobTitle("Tu Cargo | Empresa", "Ciudad"),
      dateP("Mes Año — Mes Año"),
      body("Descripción corta..."),
@@ -82,7 +75,7 @@ Allí encontrarás variables y arrays que construyen el documento de Word. Debes
    ];
    ```
 
-3. **Actualiza el Encabezado del Documento Word:** Al final del script, busca donde se configura el `doc = new Document({...})` y cambia el título principal:
+3. **Actualiza el Encabezado del Documento Word:** Cerca del final del script, busca donde se configura el `doc = new Document({...})` y cambia el título principal:
    ```javascript
    new TextRun({ text: "TU NOMBRE COMPLETO", bold: true, ... }),
    new TextRun({ text: "TU PROFESIÓN", size: 26, ... }),
@@ -101,7 +94,7 @@ Al hacer clic en el botón **"Descargar PDF"**, se abrirá la ventana de impresi
 
 1. **Destino:** Selecciona "Guardar como PDF".
 2. **Márgenes:** Selecciona "Ninguno" o "Predeterminado" (ajusta según lo veas en la vista previa).
-3. **Opciones:** Asegúrate de **desmarcar** "Encabezados y pies de página" para evitar que salga la fecha, la URL y el número de página que pone el navegador.
+3. **Opciones:** Asegúrate de **desmarcar** "Encabezados y pies de página" para evitar que salga la fecha, la URL y el número de página que suele poner el navegador.
 
 *(El botón de descarga se oculta automáticamente en el PDF gracias a la clase `.no-print` configurada en el CSS).*
 
@@ -112,7 +105,7 @@ Al hacer clic en el botón **"Descargar PDF"**, se abrirá la ventana de impresi
 - **HTML5:** Para la estructura del documento.
 - **CSS Inline:** Estilos incrustados para facilitar que sea un archivo único y garantizar su portabilidad.
 - **JavaScript Vanilla:** Funciones básicas para manejar la impresión y la descarga.
-- **[docx.js](https://docx.js.org/):** Una poderosa librería de JavaScript utilizada vía CDN (`unpkg.com`) para generar y descargar dinámicamente el archivo `.docx` directamente en el cliente.
+- **[docx.js](https://docx.js.org/):** Una poderosa librería de JavaScript utilizada vía CDN (`unpkg.com`) para generar y descargar dinámicamente el archivo `.docx` directamente del lado del cliente.
 
 ---
 
@@ -120,9 +113,9 @@ Al hacer clic en el botón **"Descargar PDF"**, se abrirá la ventana de impresi
 
 Este proyecto es de **dominio público / Licencia MIT**. Siéntete libre de clonarlo, modificarlo, adaptarlo a tus necesidades y compartirlo con otros desarrolladores o profesionales que estén cansados de pagar por hacer un simple CV.
 
-Si crees que puedes mejorar el código (por ejemplo, automatizando que el JavaScript lea directamente del DOM del HTML para no tener que escribir los datos dos veces), ¡los Pull Requests son totalmente bienvenidos!
+Si crees que puedes mejorar el código (por ejemplo, automatizando que el JavaScript lea directamente del DOM del HTML para no tener que escribir los datos dos veces), ¡los *Pull Requests* son totalmente bienvenidos!
 
-También aceptamos ideas para facilitar la creación del CV para personas que no sepan de código
+También aceptamos ideas para facilitar la creación del CV para personas que no sepan de código.
 
 ---
 *Hecho por desarrolladores, para desarrolladores. ¡Mucho éxito en tu búsqueda laboral!* 🚀
