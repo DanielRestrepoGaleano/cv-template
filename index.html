@@ -16,11 +16,19 @@
   <header class="toolbar no-print" id="toolbar">
     <span class="toolbar-brand">📄 CV Builder</span>
     <div class="toolbar-actions">
+      <form action="https://www.paypal.com/donate" method="post" target="_top">
+        <input type="hidden" name="hosted_button_id" value="PBKYLA7JRNN3U" />
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit"
+          title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+        <img alt="" border="0" src="https://www.paypal.com/en_CO/i/scr/pixel.gif" width="1" height="1" />
+      </form>
+
       <button id="btn-toggle-editor" class="btn btn-secondary" onclick="toggleEditor()">◀ Editor</button>
-      <button id="btn-lang"          class="btn btn-lang"      onclick="toggleLang()">🌐 ES → EN</button>
-      <button id="btn-pdf"           class="btn btn-pdf"       onclick="descargarPDF()">📄 Descargar PDF</button>
-      <button id="btn-word"          class="btn btn-word"      onclick="descargarWord()">📝 Descargar Word</button>
-      <button id="btn-reset"         class="btn btn-reset"     onclick="resetData()" title="Restablecer">↺ Restablecer</button>
+      <button id="btn-lang" class="btn btn-lang" onclick="toggleLang()">🌐 ES → EN</button>
+      <button id="btn-pdf" class="btn btn-pdf" onclick="descargarPDF()">📄 Descargar PDF</button>
+      <button id="btn-word" class="btn btn-word" onclick="descargarWord()">📝 Descargar Word</button>
+      <button id="btn-reset" class="btn btn-reset" onclick="resetData()" title="Restablecer">↺ Restablecer</button>
+
     </div>
   </header>
 
