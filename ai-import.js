@@ -130,7 +130,11 @@ function onCVFileSelected(input) {
 async function _validateCVFile(file) {
   if (!file) throw new Error('No seleccionaste ningún archivo.');
 
-  const ext = file.name.split('.').pop().toLowerCase();
+  const lastDot = file.name.lastIndexOf('.');
+  if (lastDot === -1) {
+    throw new Error('El archivo no tiene extensión. Solo se aceptan archivos .pdf o .docx');
+  }
+  const ext = file.name.slice(lastDot + 1).toLowerCase();
   if (ext !== 'pdf' && ext !== 'docx') {
     throw new Error('Formato no válido. Solo se aceptan archivos .pdf o .docx');
   }
@@ -214,6 +218,8 @@ async function _extractDOCX(file) {
 /* ── AI calls ────────────────────────────────────────────────────────────── */
 
 function _buildPrompt(cvText) {
+  // Truncate to ~14 000 characters (~3 500 tokens at 4 chars/token) to stay
+  // within typical API input limits while keeping most CV content intact.
   return `You are an expert CV/resume parser. Extract every piece of information from the CV text below and return it as a single valid JSON object — no markdown, no code fences, no extra text.
 
 Use EXACTLY this JSON schema:

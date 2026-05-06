@@ -79,7 +79,13 @@ async function handlePhotoUpload(input) {
   if (!file) return;
 
   // 1. Extension check
-  const ext = ('.' + file.name.split('.').pop()).toLowerCase();
+  const lastDot = file.name.lastIndexOf('.');
+  if (lastDot === -1) {
+    alert('El archivo no tiene extensión. Use una imagen con extensión .jpg, .jpeg, .png, .webp, .gif o .avif');
+    input.value = '';
+    return;
+  }
+  const ext = ('.' + file.name.slice(lastDot + 1)).toLowerCase();
   if (!PHOTO_EXT_OK.has(ext)) {
     alert('Extensión no válida. Use: .jpg, .jpeg, .png, .webp, .gif o .avif');
     input.value = '';
