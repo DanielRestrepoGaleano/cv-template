@@ -30,9 +30,7 @@ function _defaultChatPrefs() {
   return {
     provider: 'openai',
     model: 'gpt-4o-mini',
-    open: false,
-    advancedOpen: false,
-    helpOpen: false
+    open: false
   };
 }
 
@@ -50,24 +48,24 @@ window.addEventListener('beforeunload', function () {
 
 const AI_PROVIDERS = {
   openai: {
-    label:        'OpenAI (ChatGPT)',
+    label: 'OpenAI (ChatGPT)',
     defaultModel: 'gpt-4o-mini',
-    placeholder:  'gpt-4o-mini, gpt-4o, gpt-3.5-turbo…'
+    placeholder: 'gpt-4o-mini, gpt-4o, gpt-3.5-turbo…'
   },
   claude: {
-    label:        'Claude (Anthropic)',
+    label: 'Claude (Anthropic)',
     defaultModel: 'claude-3-5-haiku-20241022',
-    placeholder:  'claude-3-5-haiku-20241022, claude-3-5-sonnet-20241022…'
+    placeholder: 'claude-3-5-haiku-20241022, claude-3-5-sonnet-20241022…'
   },
   gemini: {
-    label:        'Gemini (Google)',
+    label: 'Gemini (Google)',
     defaultModel: 'gemini-1.5-flash',
-    placeholder:  'gemini-1.5-flash, gemini-1.5-pro, gemini-2.0-flash…'
+    placeholder: 'gemini-1.5-flash, gemini-1.5-pro, gemini-2.0-flash…'
   },
   groq: {
-    label:        'Groq',
+    label: 'Groq',
     defaultModel: 'llama-3.1-8b-instant',
-    placeholder:  'llama-3.1-8b-instant, mixtral-8x7b-32768, llama3-70b-8192…'
+    placeholder: 'llama-3.1-8b-instant, mixtral-8x7b-32768, llama3-70b-8192…'
   }
 };
 
@@ -126,11 +124,6 @@ function _getChatPrefs() {
   return CHAT_PREFS[currentLang];
 }
 
-function _setChatPrefs(prefs) {
-  CHAT_PREFS[currentLang] = _cloneChatPrefs(prefs);
-  _persistChatState();
-}
-
 function _persistChatState() {
   try {
     localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({
@@ -154,10 +147,6 @@ function loadChatState() {
     if (parsed && parsed.prefs) {
       CHAT_PREFS.es = _cloneChatPrefs(parsed.prefs.es);
       CHAT_PREFS.en = _cloneChatPrefs(parsed.prefs.en);
-      CHAT_PREFS.es.advancedOpen = false;
-      CHAT_PREFS.en.advancedOpen = false;
-      CHAT_PREFS.es.helpOpen = false;
-      CHAT_PREFS.en.helpOpen = false;
     }
   } catch (_) {
     CHAT_THREADS.es = [];
@@ -172,19 +161,13 @@ function _applyChatUiState() {
   const panel = document.getElementById('chat-panel');
   const providerEl = document.getElementById('chat-provider');
   const modelEl = document.getElementById('chat-model');
-  const helpEl = document.getElementById('chat-help');
-  const advancedEl = document.getElementById('chat-settings');
-  const advancedToggle = document.getElementById('chat-advanced-summary');
 
   if (panel) {
-    panel.classList.toggle('collapsed', !prefs.open);
+    panel.classList.toggle('hidden', !prefs.open);
     panel.setAttribute('aria-hidden', prefs.open ? 'false' : 'true');
   }
   if (providerEl && prefs.provider) providerEl.value = prefs.provider;
   if (modelEl && prefs.model) modelEl.value = prefs.model;
-  if (helpEl) helpEl.hidden = !prefs.helpOpen;
-  if (advancedEl) advancedEl.hidden = !prefs.advancedOpen;
-  if (advancedToggle) advancedToggle.setAttribute('aria-expanded', prefs.advancedOpen ? 'true' : 'false');
 }
 
 function _bindChatUiStateListeners() {
@@ -230,10 +213,44 @@ function closeAiImportModal() {
   _setStatus('', '');
 }
 
+function openChatSettingsModal() {
+  const modal = document.getElementById('chat-settings-modal');
+  const keyInput = document.getElementById('chat-api-key');
+  if (modal) modal.style.display = 'flex';
+  syncChatLanguageUI();
+
+  if (keyInput) {
+    keyInput.value = ''; // clean input for security
+    // visually let the user know we have it in memory
+    keyInput.placeholder = _chatTempKey ? _msg('(Key configurada en memoria)', '(Key set in memory)') : 'sk-…';
+  }
+}
+
+function closeChatSettingsModal() {
+  const modal = document.getElementById('chat-settings-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function saveChatSettings() {
+  const keyInput = document.getElementById('chat-api-key');
+  if (keyInput && keyInput.value.trim()) {
+    _chatTempKey = keyInput.value.trim();
+    keyInput.value = ''; // erase from DOM immediately
+  }
+
+  // Force updating the preferences visually and in memory
+  const providerEl = document.getElementById('chat-provider');
+  const modelEl = document.getElementById('chat-model');
+  const prefs = _getChatPrefs();
+
+  if (providerEl) prefs.provider = providerEl.value;
+  if (modelEl) prefs.model = modelEl.value;
+
+  _persistChatState();
+  closeChatSettingsModal();
+}
+
 function _clearKey() {
-  // Overwrite the string variable with empty string before nulling it
-  // (JS strings are immutable primitives, so there's no way to zero-fill
-  //  the underlying memory, but we do our best to remove the reference)
   _tempKey = '';
 }
 
@@ -256,10 +273,6 @@ function onProviderChange() {
 
 function onChatProviderChange() {
   _applyProviderDefaults('chat-provider', 'chat-model');
-  const prefs = _getChatPrefs();
-  prefs.provider = document.getElementById('chat-provider').value;
-  prefs.model = document.getElementById('chat-model').value;
-  _persistChatState();
 }
 
 function _bindModelLock(modelId) {
@@ -271,7 +284,6 @@ function _bindModelLock(modelId) {
   modelEl.dataset.listenerBound = '1';
 }
 
-// Let user lock in their model choice so provider switch doesn't reset it
 document.addEventListener('DOMContentLoaded', function () {
   _bindModelLock('ai-model');
   _bindModelLock('chat-model');
@@ -279,13 +291,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function toggleApiKeyVisibility(inputId = 'ai-api-key', buttonId = 'btn-eye') {
   const input = document.getElementById(inputId);
-  const btn   = document.getElementById(buttonId);
+  const btn = document.getElementById(buttonId);
   if (!input) return;
   if (input.type === 'password') {
-    input.type      = 'text';
+    input.type = 'text';
     if (btn) btn.textContent = '🙈';
   } else {
-    input.type      = 'password';
+    input.type = 'password';
     if (btn) btn.textContent = '👁';
   }
 }
@@ -297,16 +309,16 @@ function toggleChatApiKeyVisibility() {
 function _setStatus(type, msg) {
   const el = document.getElementById('ai-status');
   if (!el) return;
-  el.className      = 'ai-status' + (type ? ' ai-status-' + type : '');
-  el.textContent    = msg || '';
-  el.style.display  = msg ? 'block' : 'none';
+  el.className = 'ai-status' + (type ? ' ai-status-' + type : '');
+  el.textContent = msg || '';
+  el.style.display = msg ? 'block' : 'none';
 }
 
 function _setChatStatus(type, msg) {
   const el = document.getElementById('chat-status');
   if (!el) return;
-  el.className     = 'chat-status' + (type ? ' chat-status-' + type : '');
-  el.textContent   = msg || '';
+  el.className = 'chat-status' + (type ? ' chat-status-' + type : '');
+  el.textContent = msg || '';
   el.style.display = msg ? 'block' : 'none';
 }
 
@@ -341,23 +353,31 @@ function syncChatLanguageUI() {
   _setElText('btn-chat', chatTexts.button);
   _setElText('chat-panel-title', chatTexts.title);
   _setElText('chat-panel-subtitle', chatTexts.subtitle);
+
+  // Modal Settings specific UI mapping
+  _setElText('chat-settings-title', chatTexts.settingsTitle);
   _setElHTML('chat-security-notice', chatTexts.privacyNotice);
   _setElText('chat-help-text', chatTexts.help);
-  _setElText('chat-advanced-summary', chatTexts.settingsToggle);
   _setElText('chat-provider-label', chatTexts.providerLabel);
   _setElText('chat-model-label', chatTexts.modelLabel);
   _setElText('chat-api-note', chatTexts.apiKeyNote);
+  _setElText('btn-chat-save', chatTexts.settingsSave);
+  _setElText('btn-chat-cancel', chatTexts.settingsCancel);
+
   _setElText('btn-chat-clear', chatTexts.clearButton);
   _setElText('btn-chat-send', chatTexts.sendButton);
   _setElPlaceholder('chat-model', chatTexts.modelPlaceholder);
-  _setElPlaceholder('chat-api-key', 'sk-…');
   _setElPlaceholder('chat-input', chatTexts.placeholder);
+
   const chatClose = document.getElementById('btn-chat-close');
   if (chatClose) chatClose.setAttribute('aria-label', chatTexts.closeAria);
-  const chatHelp = document.getElementById('btn-chat-help');
-  if (chatHelp) chatHelp.setAttribute('aria-label', chatTexts.helpAria);
+
+  const chatSettingsIcon = document.getElementById('btn-chat-settings-icon');
+  if (chatSettingsIcon) chatSettingsIcon.setAttribute('aria-label', chatTexts.settingsAria);
+
   const chatEye = document.getElementById('btn-chat-eye');
   if (chatEye) chatEye.setAttribute('title', chatTexts.apiKeyToggle);
+
   _setProviderOptions('chat-provider');
   _bindChatUiStateListeners();
   _applyChatUiState();
@@ -398,12 +418,10 @@ async function _validateCVFile(file) {
   const b = new Uint8Array(header);
 
   if (ext === 'pdf') {
-    // %PDF → 25 50 44 46
     if (!(b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46)) {
       throw new Error(_msg('El archivo no es un PDF válido (firma de bytes incorrecta).', 'The file is not a valid PDF (incorrect byte signature).'));
     }
   } else if (ext === 'docx') {
-    // ZIP/DOCX → PK 50 4B
     if (!(b[0] === 0x50 && b[1] === 0x4B)) {
       throw new Error(_msg('El archivo no es un DOCX válido (firma de bytes incorrecta).', 'The file is not a valid DOCX (incorrect byte signature).'));
     }
@@ -414,7 +432,7 @@ async function _validateCVFile(file) {
 
 async function _extractText(file) {
   const ext = file.name.split('.').pop().toLowerCase();
-  if (ext === 'pdf')  return _extractPDF(file);
+  if (ext === 'pdf') return _extractPDF(file);
   if (ext === 'docx') return _extractDOCX(file);
   throw new Error(_msg('Formato no soportado.', 'Unsupported format.'));
 }
@@ -424,15 +442,14 @@ async function _extractPDF(file) {
     throw new Error(_msg('La librería PDF.js no está disponible. Recarga la página e intenta de nuevo.', 'PDF.js is not available. Reload the page and try again.'));
   }
 
-  const buffer    = await file.arrayBuffer();
-  const loadTask  = pdfjsLib.getDocument({ data: new Uint8Array(buffer) });
-  const pdf       = await loadTask.promise;
+  const buffer = await file.arrayBuffer();
+  const loadTask = pdfjsLib.getDocument({ data: new Uint8Array(buffer) });
+  const pdf = await loadTask.promise;
 
   let text = '';
   for (let p = 1; p <= pdf.numPages; p++) {
-    const page    = await pdf.getPage(p);
+    const page = await pdf.getPage(p);
     const content = await page.getTextContent();
-    // Join items; add space between them, newline between pages
     text += content.items.map(i => i.str).join(' ') + '\n';
   }
   return text;
@@ -444,15 +461,14 @@ async function _extractDOCX(file) {
   }
 
   const buffer = await file.arrayBuffer();
-  const zip    = await JSZip.loadAsync(buffer);
-  const entry  = zip.file('word/document.xml');
+  const zip = await JSZip.loadAsync(buffer);
+  const entry = zip.file('word/document.xml');
   if (!entry) throw new Error(_msg('Archivo DOCX inválido: no contiene word/document.xml.', 'Invalid DOCX file: it does not contain word/document.xml.'));
 
-  const xml    = await entry.async('text');
+  const xml = await entry.async('text');
   const parser = new DOMParser();
-  const doc    = parser.parseFromString(xml, 'application/xml');
+  const doc = parser.parseFromString(xml, 'application/xml');
 
-  // Build paragraph-structured text from <w:p> elements
   const paragraphs = doc.getElementsByTagName('w:p');
   let text = '';
   for (let i = 0; i < paragraphs.length; i++) {
@@ -467,8 +483,6 @@ async function _extractDOCX(file) {
 /* ── AI calls ────────────────────────────────────────────────────────────── */
 
 function _buildPrompt(cvText) {
-  // Truncate to ~14 000 characters (~3 500 tokens at 4 chars/token) to stay
-  // within typical API input limits while keeping most CV content intact.
   return `You are an expert CV/resume parser. Extract every piece of information from the CV text below and return it as a single valid JSON object — no markdown, no code fences, no extra text.
 
 Use EXACTLY this JSON schema:
@@ -526,14 +540,14 @@ async function _callOpenAI(key, model, prompt) {
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + key
     },
     body: JSON.stringify({
       model,
-      messages:        [{ role: 'user', content: prompt }],
+      messages: [{ role: 'user', content: prompt }],
       response_format: { type: 'json_object' },
-      temperature:     0.1
+      temperature: 0.1
     })
   });
   if (!res.ok) {
@@ -548,15 +562,15 @@ async function _callClaude(key, model, prompt) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
-      'Content-Type':                    'application/json',
-      'x-api-key':                       key,
-      'anthropic-version':               '2023-06-01',
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
       'anthropic-dangerous-allow-browser': 'true'
     },
     body: JSON.stringify({
       model,
       max_tokens: 4096,
-      messages:   [{ role: 'user', content: prompt }]
+      messages: [{ role: 'user', content: prompt }]
     })
   });
   if (!res.ok) {
@@ -569,12 +583,12 @@ async function _callClaude(key, model, prompt) {
 
 async function _callGemini(key, model, prompt) {
   const url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
-              encodeURIComponent(model) + ':generateContent?key=' + key;
+    encodeURIComponent(model) + ':generateContent?key=' + key;
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      contents:       [{ parts: [{ text: prompt }] }],
+      contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { temperature: 0.1 }
     })
   });
@@ -590,12 +604,12 @@ async function _callGroq(key, model, prompt) {
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + key
     },
     body: JSON.stringify({
       model,
-      messages:    [{ role: 'user', content: prompt }],
+      messages: [{ role: 'user', content: prompt }],
       temperature: 0.1
     })
   });
@@ -612,7 +626,7 @@ async function _callProvider(provider, key, model, prompt) {
     case 'openai': return _callOpenAI(key, model, prompt);
     case 'claude': return _callClaude(key, model, prompt);
     case 'gemini': return _callGemini(key, model, prompt);
-    case 'groq':   return _callGroq(key, model, prompt);
+    case 'groq': return _callGroq(key, model, prompt);
     default: throw new Error('Proveedor desconocido: ' + provider);
   }
 }
@@ -620,55 +634,52 @@ async function _callProvider(provider, key, model, prompt) {
 /* ── Response parsing ────────────────────────────────────────────────────── */
 
 function _parseResponse(raw) {
-  // Strip markdown code fences if the model wrapped the JSON
   let cleaned = raw.trim();
   if (cleaned.startsWith('```')) {
     cleaned = cleaned.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '');
   }
 
-  const p = JSON.parse(cleaned); // throws SyntaxError on bad JSON
+  const p = JSON.parse(cleaned);
 
-  // Minimal structural validation
   const required = ['nombre', 'profesion', 'contacto', 'links',
-                    'perfil', 'experiencia', 'educacion', 'habilidades', 'certificaciones'];
+    'perfil', 'experiencia', 'educacion', 'habilidades', 'certificaciones'];
   for (const k of required) {
     if (!(k in p)) throw new Error(_msg('Campo faltante en la respuesta de la IA: ', 'Missing field in the AI response: ') + k);
   }
 
-  const str  = (v) => String(v || '').trim();
-  const arr  = (v) => Array.isArray(v) ? v : [];
+  const str = (v) => String(v || '').trim();
+  const arr = (v) => Array.isArray(v) ? v : [];
 
   return {
-    nombre:    str(p.nombre),
+    nombre: str(p.nombre),
     profesion: str(p.profesion),
     contacto: {
       direccion: str(p.contacto && p.contacto.direccion),
-      telefono:  str(p.contacto && p.contacto.telefono),
-      email:     str(p.contacto && p.contacto.email)
+      telefono: str(p.contacto && p.contacto.telefono),
+      email: str(p.contacto && p.contacto.email)
     },
     links: arr(p.links).map(lk => ({
       label: str(lk.label),
-      url:   str(lk.url)
+      url: str(lk.url)
     })).filter(lk => lk.label || lk.url),
     perfil: str(p.perfil),
     experiencia: arr(p.experiencia).map(exp => ({
-      cargo:       str(exp.cargo),
-      ubicacion:   str(exp.ubicacion),
-      fecha:       str(exp.fecha),
+      cargo: str(exp.cargo),
+      ubicacion: str(exp.ubicacion),
+      fecha: str(exp.fecha),
       descripcion: str(exp.descripcion),
-      logros:      arr(exp.logros).map(l => str(l)).filter(Boolean)
+      logros: arr(exp.logros).map(l => str(l)).filter(Boolean)
     })).filter(exp => exp.cargo),
     educacion: arr(p.educacion).map(edu => ({
-      titulo:      str(edu.titulo),
+      titulo: str(edu.titulo),
       institucion: str(edu.institucion),
-      fecha:       str(edu.fecha)
+      fecha: str(edu.fecha)
     })).filter(edu => edu.titulo),
     habilidades: arr(p.habilidades).map(sk => ({
-      categoria:   str(sk.categoria),
+      categoria: str(sk.categoria),
       tecnologias: str(sk.tecnologias)
     })).filter(sk => sk.categoria || sk.tecnologias),
     certificaciones: arr(p.certificaciones).map(c => str(c)).filter(Boolean),
-    // Preserve existing sectionConfig — AI import does not reset visibility/titles
     sectionConfig: cvData[currentLang].sectionConfig
   };
 }
@@ -676,34 +687,29 @@ function _parseResponse(raw) {
 /* ── Main entry point ────────────────────────────────────────────────────── */
 
 async function runAIImport() {
-  const fileInput  = document.getElementById('ai-cv-file');
+  const fileInput = document.getElementById('ai-cv-file');
   const providerEl = document.getElementById('ai-provider');
-  const modelEl    = document.getElementById('ai-model');
-  const keyInput   = document.getElementById('ai-api-key');
-  const importBtn  = document.getElementById('btn-ai-import');
+  const modelEl = document.getElementById('ai-model');
+  const keyInput = document.getElementById('ai-api-key');
+  const importBtn = document.getElementById('btn-ai-import');
   const importTexts = _getImportTexts();
 
-  const file     = fileInput.files && fileInput.files[0];
+  const file = fileInput.files && fileInput.files[0];
   const provider = providerEl.value;
-  const model    = modelEl.value.trim();
+  const model = modelEl.value.trim();
 
-  // Capture key into the transient variable — immediately clear the input
   _tempKey = keyInput.value;
   keyInput.value = '';
 
-  // Input validation (before any async work)
-  if (!file)      { _clearKey(); _setStatus('error', importTexts.status.fileRequired); return; }
-  if (!model)     { _clearKey(); _setStatus('error', importTexts.status.modelRequired); return; }
-  if (!_tempKey)  { _clearKey(); _setStatus('error', importTexts.status.apiKeyRequired); return; }
+  if (!file) { _clearKey(); _setStatus('error', importTexts.status.fileRequired); return; }
+  if (!model) { _clearKey(); _setStatus('error', importTexts.status.modelRequired); return; }
+  if (!_tempKey) { _clearKey(); _setStatus('error', importTexts.status.apiKeyRequired); return; }
 
   importBtn.disabled = true;
   _setStatus('info', importTexts.status.validating);
 
   try {
-    // 1 — Validate file
     await _validateCVFile(file);
-
-    // 2 — Extract text
     _setStatus('info', importTexts.status.extracting);
     const text = await _extractText(file);
     if (!text || text.trim().length < 30) {
@@ -713,21 +719,16 @@ async function runAIImport() {
       ));
     }
 
-    // 3 — Call AI
     _setStatus('info', importTexts.status.sending);
-    const prompt  = _buildPrompt(text);
+    const prompt = _buildPrompt(text);
     const rawResp = await _callProvider(provider, _tempKey, model, prompt);
 
-    // 4 — Clear key immediately after the request completes
     _clearKey();
-
-    // 5 — Parse & apply
     _setStatus('info', importTexts.status.processing);
     const parsed = _parseResponse(rawResp);
 
-    // Apply to current language; mirror to the other so both have valid data
     const otherLang = currentLang === 'es' ? 'en' : 'es';
-    const otherSectionCfg = cvData[otherLang].sectionConfig; // preserve other lang's config
+    const otherSectionCfg = cvData[otherLang].sectionConfig;
     cvData[currentLang] = parsed;
     const otherData = JSON.parse(JSON.stringify(parsed));
     otherData.sectionConfig = otherSectionCfg;
@@ -743,9 +744,8 @@ async function runAIImport() {
     if (infoEl) infoEl.textContent = '';
 
   } catch (err) {
-    _clearKey(); // always clear on error too
+    _clearKey();
     let msg = err.message || 'Ocurrió un error inesperado.';
-    // Friendly CORS hint
     if (msg.toLowerCase().includes('failed to fetch') || msg.toLowerCase().includes('networkerror')) {
       msg += ' — Verifica tu conexión a internet. Si el proveedor bloquea solicitudes desde el navegador, prueba con otro proveedor.';
     }
@@ -815,16 +815,10 @@ function _setChatBusy(busy) {
 }
 
 function _captureChatKey() {
-  const keyInput = document.getElementById('chat-api-key');
-  if (!_chatTempKey && keyInput) {
-    _chatTempKey = keyInput.value.trim();
-    keyInput.value = '';
-  }
-  return _chatTempKey;
+  return _chatTempKey; // Capturado directamente desde guardar configuracion de chat
 }
 
 function _buildChatPrompt(userMessage) {
-  const chatTexts = _getChatTexts();
   const targetLanguage = currentLang === 'es' ? 'Spanish' : 'English';
   const history = _getChatThread()
     .slice(-8)
@@ -862,7 +856,7 @@ function openChatPanel() {
   const prefs = _getChatPrefs();
   prefs.open = true;
   _persistChatState();
-  panel.classList.remove('collapsed');
+  panel.classList.remove('hidden'); // Ocultar por completo removido
   panel.setAttribute('aria-hidden', 'false');
   syncChatLanguageUI();
   _ensureChatWelcome();
@@ -877,7 +871,7 @@ function closeChatPanel() {
   const prefs = _getChatPrefs();
   prefs.open = false;
   _persistChatState();
-  panel.classList.add('collapsed');
+  panel.classList.add('hidden'); // Ocultar por completo añadido
   panel.setAttribute('aria-hidden', 'true');
   _setChatStatus('', '');
 }
@@ -885,7 +879,7 @@ function closeChatPanel() {
 function toggleChatPanel(forceOpen) {
   const panel = document.getElementById('chat-panel');
   if (!panel) return;
-  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : panel.classList.contains('collapsed');
+  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : panel.classList.contains('hidden');
   if (shouldOpen) {
     openChatPanel();
   } else {
@@ -895,37 +889,10 @@ function toggleChatPanel(forceOpen) {
 
 function clearChatMessages() {
   CHAT_THREADS[currentLang] = [];
-  _chatTempKey = '';
-  const keyInput = document.getElementById('chat-api-key');
-  if (keyInput) keyInput.value = '';
   _setChatStatus('', '');
   _ensureChatWelcome();
   _persistChatState();
   renderChatMessages();
-}
-
-function toggleChatHelp() {
-  const helpEl = document.getElementById('chat-help');
-  if (!helpEl) return;
-  helpEl.hidden = !helpEl.hidden;
-  const prefs = _getChatPrefs();
-  prefs.helpOpen = !helpEl.hidden;
-  _persistChatState();
-}
-
-function toggleChatAdvanced(forceOpen) {
-  const settingsEl = document.getElementById('chat-settings');
-  if (!settingsEl) return;
-
-  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : settingsEl.hidden;
-  settingsEl.hidden = !shouldOpen;
-
-  const prefs = _getChatPrefs();
-  prefs.advancedOpen = shouldOpen;
-  _persistChatState();
-
-  const toggleBtn = document.getElementById('chat-advanced-summary');
-  if (toggleBtn) toggleBtn.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
 }
 
 function handleChatComposerKeydown(event) {

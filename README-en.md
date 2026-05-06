@@ -1,120 +1,85 @@
-# 📄 Developer CV Template (Free & Open Source)
+# 📄 CV Builder & AI Coach
 
-Welcome to the ultimate Resume/CV template for developers!
+A modern, fast, 100% client-side web application to create, edit, and export your Resume/CV. Now powered by Artificial Intelligence to import data from your old resumes and provide real-time feedback to level up your professional profile.
 
-This template was born from a common frustration: **being tired of resume builder platforms that waste your time, force you to sign up, and hit you with a paywall just to download your own document.**
+## ✨ Key Features
 
-Here, you have total control. Your data is yours, the code is yours, and exports are unlimited and free.
-
-## ✨ Features
-
-- 🆓 **100% Free and Open Source:** No sign-ups, no watermarks, no paywalls.
-- 🎨 **Clean & Modern Design:** Two-column layout, readable typography, and a minimalist style.
-- ✍️ **Graphical Editing Interface:** A side panel with a form where you fill in your data — no code editing required.
-- 👁️ **Real-Time Preview:** Every keystroke in the form instantly updates the CV preview.
-- 💾 **Auto-Save in the Browser:** Your data is automatically saved to `localStorage`. Close the tab and come back — everything is still there.
-- 🌐 **Bilingual (ES / EN):** A single button switches the entire interface language. You can maintain an independent Spanish and English version of your CV.
-- 🖨️ **Native PDF Export:** Uses the browser's print function; the editing panel is automatically hidden.
-- 📝 **One-Click Word (.docx) Export:** Generates the `.docx` file by reading directly from the form. The filename is created automatically from your name.
-- 🛠️ **No Heavy Dependencies:** Four static files (`index.html`, `style.css`, `data.js`, `app.js`). No Node.js, npm, or server required.
+- 🤖 **Integrated AI CV Coach:** A smart chat that reads your active CV and gives you tailored advice (e.g., *"You should group your skills by category"*, *"Add clear metrics to this job experience"*).
+- 🪄 **Magic AI Import:** Have an old PDF or Word document? Upload it, provide your API Key, and the AI will extract all the data and populate the form for you automatically.
+- 📷 **Profile Photo Support:** Upload, crop, and adjust the size of your photo directly from the visual editor.
+- 🆓 **100% Free & Open Source:** No sign-ups, no watermarks, no paywalls.
+- 💾 **Auto-Save & Absolute Privacy:** Your data is saved in your browser's `localStorage`. **Your API Key is NEVER saved** (it only lives in RAM) and there are no middleman servers.
+- 🌐 **Bilingual (ES / EN):** One click switches the entire UI language. Keep an English and a Spanish version of your CV simultaneously.
+- 🖨️ **Native Export:** Download your CV in a print-perfect **PDF** format or as a **Word (.docx)** document with a single click.
+- 🛠️ **No Heavy Dependencies:** HTML, CSS, and Vanilla JS. No Node.js, no npm, no servers required. Ready for GitHub Pages.
 
 ---
 
-## 🚀 Getting Started (Quick Guide)
+## 🚀 Quick Start
 
-1. **Download the project:** Clone the repository or download `index.html`, `style.css`, `data.js`, and `app.js` into the same folder.
-2. **Open `index.html` in your browser:** Double-click it to see the app with pre-loaded example data.
-3. **Fill in the form:** The left panel contains fields for your name, profession, contact info, experience, education, and skills. The preview updates instantly.
-4. **Switch languages** with the **🌐 EN → ES** button to edit the Spanish version of your CV.
-5. **Export** using the buttons in the top toolbar when you're ready.
-
----
-
-## ✏️ How to Edit Your Information
-
-No code editing needed. All your information is managed from the **left side panel**:
-
-| Section              | What to enter                                                                  |
-|----------------------|--------------------------------------------------------------------------------|
-| **Name / Profession**| Your full name and your job title or specialty.                                |
-| **Contact**          | Address, phone number, and email.                                              |
-| **Links**            | Label and URL for your profiles (GitHub, LinkedIn, portfolio, etc.).           |
-| **Profile**          | Professional summary in 3–5 lines.                                             |
-| **Experience**       | Role, company, period, description, and achievements (one per line).           |
-| **Education**        | Degree, institution, and period for each entry.                                |
-| **Skills**           | Category and technologies/tools (e.g. "Frontend: React, Vue, CSS").            |
-| **Certifications**   | Course name, issuing entity, and date.                                         |
-
-You can **add or remove entries** in each section using the `+` and `×` buttons.
+1. **Download the project:** Clone the repository or download the files into a folder.
+2. **Open `index.html` in your browser:** Double-click to see the app loaded with dummy data.
+3. **Use AI or type manually:** Click **🤖 Import CV with AI** to load data from an old PDF, or simply fill out the left sidebar form.
+4. **Ask the AI for advice:** Open the **💬 AI Chat**, set up your favorite model (OpenAI, Claude, Gemini, or Groq) and ask how to tailor your profile for a specific job offer.
+5. **Export:** Switch languages (🌐 EN → ES) and use the top bar buttons to download your PDF or Word document.
 
 ---
 
-## 🌐 Language Switching
+## ✏️ How to Edit Your Info
 
-Click the **🌐 EN → ES** button in the top toolbar to toggle between English and Spanish.
+No coding required. Everything is managed from the **left sidebar panel**:
 
-- Each language has its own **independent dataset**.
-- The form and CV preview switch to the selected language.
-- Both versions are saved simultaneously in `localStorage`.
-
----
-
-## 💾 Auto-Save
-
-There is no "Save" button. Every time you type in the form or add/remove an entry, the data is automatically saved to your browser's `localStorage`.
-
-To restore the **example data**, use the **↺ Reset** button in the toolbar.
-
----
-
-## 🖨️ PDF Export Tips
-
-1. Click **📄 Download PDF** in the top toolbar.
-2. Your browser's print dialog will open.
-3. Select **"Save as PDF"** as the destination.
-4. In the advanced options, **uncheck "Headers and footers"** for a clean output.
-5. Adjust margins if necessary (recommended: "None" or "Default").
-
-The editing panel and toolbar are automatically hidden in the PDF.
+| Section             | What to enter                                                            |
+|---------------------|--------------------------------------------------------------------------|
+| **Profile Photo**   | Upload your image and visually adjust the frame size.                    |
+| **Name / Role**     | Your full name and your job title/specialty.                             |
+| **Contact**         | Address, phone number, and email.                                        |
+| **Links**           | Labels and URLs for your profiles (GitHub, LinkedIn, Portfolio, etc.).   |
+| **Profile**         | Professional summary in 3-5 lines.                                       |
+| **Experience**      | Role, company, dates, description, and achievements (one per line).      |
+| **Education**       | Degree, institution, and dates.                                          |
+| **Skills**          | Category and technologies (e.g., "Frontend: React, Vue, CSS").           |
+| **Certifications**  | Course name, issuer, and date.                                           |
+| **⚙️ Sections**     | Hide entire sections or rename their titles to your liking.              |
 
 ---
 
-## 📝 Word Export
+## 🔒 Privacy and Security (AI)
 
-Click **📝 Download Word**. The file is generated instantly on the client side (no data is sent to any server) and downloaded as `YOUR_NAME_CV.docx`, built automatically from the form data.
+The AI integration was built with strict security in mind:
+- Calls to OpenAI, Anthropic, Google, or Groq APIs are made **directly from your browser**.
+- **The API Key is not saved to your hard drive**, cookies, or `localStorage`. It only exists in the active tab's memory and is wiped upon reloading.
+- Your personal data does not pass through any intermediate servers.
 
 ---
 
 ## 🏗️ Project Structure
 
+```text
+├── index.html         ← Main entry point
+├── style.css          ← Styles (toolbar, editor, preview, AI chat, print)
+├── data.js            ← Data model: cvData (ES/EN) and bilingual UI labels
+├── app.js             ← Core logic: rendering, localStorage, exports
+├── ai-import.js       ← AI Chat & PDF/Word import logic
+└── photo-upload.js    ← Logic for photo handling, preview, and sizing
 ```
-├── index.html   ← Main entry point (empty HTML shell + script references)
-├── style.css    ← All styles (toolbar, editor panel, CV preview, print)
-├── data.js      ← Data model: cvData (ES/EN) and bilingual UI labels
-├── app.js       ← Logic: renderCV(), renderForm(), localStorage, exports
-└── cv.html      ← Original single-file template (kept for reference)
-```
-
-**Single Source of Truth:** all CV information lives in the `cvData` object defined in `data.js` and edited through the form. Both the HTML preview and the Word document are generated by reading exactly the same object.
 
 ---
 
-## 🛠️ Built With
+## 🛠️ Technologies Used
 
-- **HTML5 / CSS3:** Structure and styles in separate files.
-- **Vanilla JavaScript (ES6+):** No frameworks. DOM manipulation, `localStorage`, and dynamic generation.
-- **[docx.js](https://docx.js.org/):** `.docx` generation library loaded via CDN (`unpkg.com`), executed 100% on the client.
+- **HTML5 / CSS3 / Vanilla JS (ES6+):** Zero frameworks. Direct DOM manipulation.
+- **[docx.js](https://docx.js.org/):** Client-side `.docx` generation.
+- **[PDF.js](https://mozilla.github.io/pdf.js/) & [JSZip](https://stuk.github.io/jszip/):** In-browser document text extraction.
+- **LLM APIs:** Native support for OpenAI, Anthropic, Google Gemini, and Groq.
 
 ---
 
-## 🤝 Contributing and License
+## 🤝 Contributing & License
 
-This project is **Public Domain / MIT License**. Feel free to clone it, modify it, and share it.
+This project is **Public Domain / MIT License**. Feel free to clone, modify, host it on GitHub Pages, and share it.
 
-Pull Requests are welcome. Some ideas for contributions:
-- New color palettes or design themes.
-- Support for additional languages.
-- Import/export of the JSON data object.
+*Pull Requests* are highly welcome!
 
 ---
 *Built by developers, for developers. Best of luck in your job search!* 🚀
