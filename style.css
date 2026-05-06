@@ -405,6 +405,332 @@ body {
 
 .cv-certs { margin: 0; padding-left: 18px; color: #444; font-size: 14px; line-height: 1.8; }
 
+/* ── CV Header with optional photo ────────────────────────────────────────── */
+.cv-header-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.cv-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.cv-photo-frame {
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 2px solid #eaeaea;
+}
+
+.cv-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Photo editor UI ──────────────────────────────────────────────────────── */
+.photo-upload-area {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.photo-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  display: block;
+}
+
+.photo-upload-label {
+  cursor: pointer;
+  display: inline-block;
+  width: auto;
+  padding: 5px 12px;
+  font-size: 11px;
+}
+
+.btn-photo-remove {
+  background: none;
+  border: 1px solid #cc4444;
+  color: #cc4444;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 3px 8px;
+}
+.btn-photo-remove:hover { background: #fff0f0; }
+
+.photo-size-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.photo-size-row label {
+  font-size: 10px;
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.photo-size-row input[type="range"] {
+  flex: 1;
+  min-width: 80px;
+  accent-color: #2b579a;
+  cursor: pointer;
+}
+
+#photo-size-val {
+  font-size: 11px;
+  color: #555;
+  white-space: nowrap;
+  min-width: 36px;
+}
+
+/* ── Section config UI ────────────────────────────────────────────────────── */
+.section-config-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.section-config-item {
+  background: #f8f9fb;
+  border: 1px solid #e8eaed;
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+
+.section-config-check-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.section-config-check-row input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #2b579a;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.section-config-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  margin: 0 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.section-title-rename {
+  width: 100%;
+  padding: 3px 6px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  font-size: 11px;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+}
+
+.section-title-rename:focus {
+  outline: none;
+  border-color: #2b579a;
+}
+
+/* ── AI Import button ─────────────────────────────────────────────────────── */
+.btn-ai {
+  background: #6a26cd;
+  color: #fff;
+}
+
+/* ── AI Import modal ──────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-box {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.28);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.modal-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: #888;
+  padding: 0 2px;
+}
+.modal-close:hover { color: #333; }
+
+.modal-body {
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ai-security-notice {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 5px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #5a4000;
+  line-height: 1.5;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-field input[type="text"],
+.modal-field input[type="password"],
+.modal-field select {
+  padding: 7px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #333;
+  background: #fafafa;
+  width: 100%;
+}
+
+.modal-field input:focus,
+.modal-field select:focus {
+  outline: none;
+  border-color: #2b579a;
+  background: #fff;
+}
+
+.modal-field input[type="file"] {
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+.api-key-note {
+  font-size: 10px;
+  color: #888;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.api-key-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.api-key-row input {
+  flex: 1;
+}
+
+.btn-eye {
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.btn-eye:hover { background: #e4e4e4; }
+
+.ai-file-info {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.ai-status {
+  border-radius: 4px;
+  padding: 9px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ai-status-info    { background: #e8f0fe; color: #1a56c4; border: 1px solid #c3d5fd; }
+.ai-status-success { background: #e6f4ea; color: #1b6b35; border: 1px solid #b7dfbf; }
+.ai-status-error   { background: #fce8e8; color: #b91c1c; border: 1px solid #f5bcbc; }
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.btn-ai-import {
+  background: #6a26cd;
+  color: #fff;
+  flex: 1;
+}
+
+@media print {
+  .modal-overlay { display: none !important; }
+}
+
 /* section spacing inside right col */
 .cv-right .cv-sec-title { margin-top: 28px; }
 .cv-right .cv-sec-title:first-child { margin-top: 0; }

@@ -73,6 +73,36 @@ function toggleEditor() {
   updateToolbar();
 }
 
+/* ── Section helpers ──────────────────────────────────────────────────────── */
+
+const SECTION_KEYS = ['detalles', 'enlaces', 'habilidades', 'perfil', 'experiencia', 'educacion', 'certificaciones'];
+
+function getSectionTitle(key) {
+  const cfg = cvData[currentLang].sectionConfig;
+  const custom = cfg && cfg[key] && cfg[key].titulo;
+  return custom || uiLabels[currentLang].secciones[key] || key;
+}
+
+function isSectionVisible(key) {
+  const cfg = cvData[currentLang].sectionConfig;
+  if (!cfg || !cfg[key]) return true;
+  return cfg[key].visible !== false;
+}
+
+function toggleSectionVisibility(key, visible) {
+  const cfg = cvData[currentLang].sectionConfig;
+  if (cfg && cfg[key]) cfg[key].visible = !!visible;
+  saveToStorage();
+  renderCV();
+}
+
+function renameSectionTitle(key, value) {
+  const cfg = cvData[currentLang].sectionConfig;
+  if (cfg && cfg[key]) cfg[key].titulo = value;
+  saveToStorage();
+  renderCV();
+}
+
 /* ── Form Rendering ───────────────────────────────────────────────────────── */
 
 function renderForm() {
@@ -152,7 +182,60 @@ function renderForm() {
       </div>
     </div>`).join('');
 
+  const isEs = currentLang === 'es';
+
+  // ── Photo upload section ──────────────────────────────────────────────────
+  const photoLabel      = isEs ? '📷 Foto de Perfil'   : '📷 Profile Photo';
+  const photoUploadLbl  = isEs ? '📷 Subir foto'        : '📷 Upload photo';
+  const photoRemoveLbl  = isEs ? '× Eliminar'           : '× Remove';
+  const photoSizeLbl    = isEs ? 'Tamaño del marco:'    : 'Frame size:';
+  const photoSizeVal    = getPhotoSize();
+  const photoThumbStyle = getPhotoData() ? '' : 'display:none';
+  const photoRemStyle   = getPhotoData() ? '' : 'display:none';
+  const photoRowStyle   = getPhotoData() ? 'display:flex' : 'display:none';
+
+  const photoSectionHtml = `
+    <div class="form-section" id="photo-form-section">
+      <p class="form-section-title">${photoLabel}</p>
+      <div class="photo-upload-area">
+        <img id="photo-preview-thumb" class="photo-thumb" style="${photoThumbStyle}" alt="Vista previa">
+        <label class="btn-add photo-upload-label" for="photo-file-input">${photoUploadLbl}</label>
+        <input type="file" id="photo-file-input" accept=".jpg,.jpeg,.png,.webp,.gif,.avif"
+               style="display:none" onchange="handlePhotoUpload(this)">
+        <button id="btn-photo-remove" class="btn-photo-remove" onclick="removePhoto()"
+                style="${photoRemStyle}">${photoRemoveLbl}</button>
+      </div>
+      <div class="photo-size-row" id="photo-size-row" style="${photoRowStyle}">
+        <label>${photoSizeLbl}</label>
+        <input type="range" id="photo-size-slider" min="60" max="200" step="10"
+               value="${photoSizeVal}" oninput="setPhotoSize(this.value)">
+        <span id="photo-size-val">${photoSizeVal} px</span>
+      </div>
+    </div>`;
+
+  // ── Section config section ────────────────────────────────────────────────
+  const secConfigTitle   = isEs ? '⚙️ Secciones'       : '⚙️ Sections';
+  const secRenamePh      = isEs ? 'Renombrar título…'   : 'Rename title…';
+  const sectionConfigHtml = SECTION_KEYS.map(key => {
+    const cfg          = (d.sectionConfig && d.sectionConfig[key]) || { visible: true, titulo: '' };
+    const defaultTitle = uiLabels[currentLang].secciones[key] || key;
+    return `
+      <div class="section-config-item">
+        <div class="section-config-check-row">
+          <input type="checkbox" id="sec-vis-${key}" ${cfg.visible ? 'checked' : ''}
+                 onchange="toggleSectionVisibility('${key}', this.checked)">
+          <label for="sec-vis-${key}" class="section-config-label">${escHtml(defaultTitle)}</label>
+        </div>
+        <input type="text" class="section-title-rename"
+               placeholder="${escHtml(secRenamePh)}"
+               value="${escHtml(cfg.titulo)}"
+               oninput="renameSectionTitle('${key}', this.value)">
+      </div>`;
+  }).join('');
+
   container.innerHTML = `
+    ${photoSectionHtml}
+
     <p class="form-title">${ui.titulo}</p>
 
     <div class="form-section">
@@ -205,6 +288,13 @@ function renderForm() {
       <p class="form-section-title">${ui.secCerts}</p>
       <div id="certs-container">${certsHtml}</div>
       <button class="btn-add" onclick="addCert()">${ui.agregarCert}</button>
+    </div>
+
+    <div class="form-section">
+      <p class="form-section-title">${secConfigTitle}</p>
+      <div class="section-config-list">
+        ${sectionConfigHtml}
+      </div>
     </div>`;
 
   bindFormEvents();
@@ -351,49 +441,80 @@ function renderCV() {
 
   const certsHtml = d.certificaciones.filter(c => c.trim()).map(c => `<li>${escHtml(c)}</li>`).join('');
 
+  /* Photo header ─────────────────────────────────────────────────────────── */
+  const photoData = getPhotoData();
+  const photoSize = getPhotoSize();
+  const photoHtml = photoData
+    ? `<div class="cv-photo-frame" style="width:${photoSize}px;height:${photoSize}px">` +
+      `<img src="${photoData}" class="cv-photo-img" alt="Foto de perfil"></div>`
+    : '';
+
+  /* Build section blocks with visibility ─────────────────────────────────── */
+  const detailsBlock = isSectionVisible('detalles') ? `
+    <h3 class="cv-sec-title">${escHtml(getSectionTitle('detalles'))}<div class="cv-underline"></div></h3>
+    <p class="cv-detail"><strong>${escHtml(ui.addressCvLbl)}</strong><br>
+      <span class="cv-detail-val">${addressLines}</span></p>
+    <p class="cv-detail"><strong>${escHtml(ui.form.telefono).toUpperCase()}</strong><br>
+      <span class="cv-detail-val">${escHtml(d.contacto.telefono)}</span></p>
+    <p class="cv-detail" style="margin-bottom:28px"><strong>${escHtml(ui.emailCvLbl)}</strong><br>
+      <span class="cv-detail-val">${escHtml(d.contacto.email)}</span></p>
+  ` : '';
+
+  const enlacesBlock = (linksHtml && isSectionVisible('enlaces')) ? `
+    <h3 class="cv-sec-title">${escHtml(getSectionTitle('enlaces'))}<div class="cv-underline"></div></h3>
+    ${linksHtml}
+  ` : '';
+
+  const habilidadesBlock = (skillsHtml && isSectionVisible('habilidades')) ? `
+    <h3 class="cv-sec-title" style="margin-top:24px">${escHtml(getSectionTitle('habilidades'))}<div class="cv-underline"></div></h3>
+    ${skillsHtml}
+  ` : '';
+
+  const perfilBlock = isSectionVisible('perfil') ? `
+    <h3 class="cv-sec-title">${escHtml(getSectionTitle('perfil'))}<div class="cv-underline"></div></h3>
+    <p class="cv-profile">${escHtml(d.perfil)}</p>
+  ` : '';
+
+  const expBlock = (expHtml && isSectionVisible('experiencia')) ? `
+    <h3 class="cv-sec-title">${escHtml(getSectionTitle('experiencia'))}<div class="cv-underline"></div></h3>
+    ${expHtml}
+  ` : '';
+
+  const eduBlock = (eduHtml && isSectionVisible('educacion')) ? `
+    <h3 class="cv-sec-title">${escHtml(getSectionTitle('educacion'))}<div class="cv-underline"></div></h3>
+    ${eduHtml}
+  ` : '';
+
+  const certsBlock = (certsHtml && isSectionVisible('certificaciones')) ? `
+    <h3 class="cv-sec-title">${escHtml(getSectionTitle('certificaciones'))}<div class="cv-underline"></div></h3>
+    <ul class="cv-certs">${certsHtml}</ul>
+  ` : '';
+
   container.innerHTML = `
-    <h1 class="cv-name">${escHtml(d.nombre)}</h1>
-    <p class="cv-profession">${escHtml(d.profesion)}</p>
+    <div class="cv-header-wrap">
+      ${photoHtml}
+      <div class="cv-header-text">
+        <h1 class="cv-name">${escHtml(d.nombre)}</h1>
+        <p class="cv-profession">${escHtml(d.profesion)}</p>
+      </div>
+    </div>
     <hr class="cv-divider">
 
     <table class="cv-table">
       <tr>
         <!-- LEFT COLUMN -->
         <td class="cv-left">
-          <h3 class="cv-sec-title">${escHtml(sec.detalles)}<div class="cv-underline"></div></h3>
-
-          <p class="cv-detail"><strong>${escHtml(ui.addressCvLbl)}</strong><br>
-            <span class="cv-detail-val">${addressLines}</span></p>
-          <p class="cv-detail"><strong>${escHtml(ui.form.telefono).toUpperCase()}</strong><br>
-            <span class="cv-detail-val">${escHtml(d.contacto.telefono)}</span></p>
-          <p class="cv-detail" style="margin-bottom:28px"><strong>${escHtml(ui.emailCvLbl)}</strong><br>
-            <span class="cv-detail-val">${escHtml(d.contacto.email)}</span></p>
-
-          ${linksHtml ? `
-            <h3 class="cv-sec-title">${escHtml(sec.enlaces)}<div class="cv-underline"></div></h3>
-            ${linksHtml}` : ''}
-
-          ${skillsHtml ? `
-            <h3 class="cv-sec-title" style="margin-top:24px">${escHtml(sec.habilidades)}<div class="cv-underline"></div></h3>
-            ${skillsHtml}` : ''}
+          ${detailsBlock}
+          ${enlacesBlock}
+          ${habilidadesBlock}
         </td>
 
         <!-- RIGHT COLUMN -->
         <td class="cv-right">
-          <h3 class="cv-sec-title">${escHtml(sec.perfil)}<div class="cv-underline"></div></h3>
-          <p class="cv-profile">${escHtml(d.perfil)}</p>
-
-          ${expHtml ? `
-            <h3 class="cv-sec-title">${escHtml(sec.experiencia)}<div class="cv-underline"></div></h3>
-            ${expHtml}` : ''}
-
-          ${eduHtml ? `
-            <h3 class="cv-sec-title">${escHtml(sec.educacion)}<div class="cv-underline"></div></h3>
-            ${eduHtml}` : ''}
-
-          ${certsHtml ? `
-            <h3 class="cv-sec-title">${escHtml(sec.certificaciones)}<div class="cv-underline"></div></h3>
-            <ul class="cv-certs">${certsHtml}</ul>` : ''}
+          ${perfilBlock}
+          ${expBlock}
+          ${eduBlock}
+          ${certsBlock}
         </td>
       </tr>
     </table>`;
@@ -640,6 +761,7 @@ async function descargarWord() {
 function resetData() {
   if (!window.confirm(uiLabels[currentLang].confirmarReset)) return;
   cvData = JSON.parse(JSON.stringify(defaultCVData));
+  resetPhoto();
   saveToStorage();
   renderForm();
   renderCV();
@@ -649,6 +771,22 @@ function resetData() {
 
 function init() {
   loadFromStorage();
+
+  // Ensure sectionConfig exists in all language data (backward compatibility)
+  const defaultSecCfg = defaultCVData.es.sectionConfig;
+  ['es', 'en'].forEach(function (lang) {
+    if (!cvData[lang].sectionConfig) {
+      cvData[lang].sectionConfig = JSON.parse(JSON.stringify(defaultSecCfg));
+    } else {
+      Object.keys(defaultSecCfg).forEach(function (key) {
+        if (!cvData[lang].sectionConfig[key]) {
+          cvData[lang].sectionConfig[key] = Object.assign({}, defaultSecCfg[key]);
+        }
+      });
+    }
+  });
+
+  initPhoto();
   document.getElementById('html-root').lang = currentLang;
   updateToolbar();
   renderForm();

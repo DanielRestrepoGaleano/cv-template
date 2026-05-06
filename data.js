@@ -181,7 +181,16 @@ const defaultCVData = {
       'Nombre del Curso o Certificación 1, Entidad (Mes Año)',
       'Nombre del Curso o Certificación 2, Entidad (Mes Año)',
       'Certificación Importante (En curso)'
-    ]
+    ],
+    sectionConfig: {
+      detalles:        { visible: true, titulo: '' },
+      enlaces:         { visible: true, titulo: '' },
+      habilidades:     { visible: true, titulo: '' },
+      perfil:          { visible: true, titulo: '' },
+      experiencia:     { visible: true, titulo: '' },
+      educacion:       { visible: true, titulo: '' },
+      certificaciones: { visible: true, titulo: '' }
+    }
   },
 
   en: {
@@ -250,6 +259,15 @@ const defaultCVData = {
       'Course or Certification 1, Institution (Month Year)',
       'Course or Certification 2, Institution (Month Year)',
       'Important Certification (In progress)'
-    ]
+    ],
+    sectionConfig: {
+      detalles:        { visible: true, titulo: '' },
+      enlaces:         { visible: true, titulo: '' },
+      habilidades:     { visible: true, titulo: '' },
+      perfil:          { visible: true, titulo: '' },
+      experiencia:     { visible: true, titulo: '' },
+      educacion:       { visible: true, titulo: '' },
+      certificaciones: { visible: true, titulo: '' }
+    }
   }
 };

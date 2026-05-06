@@ -7,7 +7,20 @@
   <title>CV Builder</title>
   <!-- Word generation library via CDN -->
   <script src="https://unpkg.com/docx@7.7.0/build/index.js"></script>
+  <!-- PDF text extraction -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- DOCX text extraction (JSZip) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link rel="stylesheet" href="style.css" />
+  <script>
+    // Configure pdf.js worker URL (must run before the library is used)
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof pdfjsLib !== 'undefined') {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      }
+    });
+  </script>
 </head>
 
 <body>
@@ -25,12 +38,84 @@
 
       <button id="btn-toggle-editor" class="btn btn-secondary" onclick="toggleEditor()">◀ Editor</button>
       <button id="btn-lang" class="btn btn-lang" onclick="toggleLang()">🌐 ES → EN</button>
+      <button id="btn-ai" class="btn btn-ai" onclick="openAiImportModal()">🤖 Importar CV con IA</button>
       <button id="btn-pdf" class="btn btn-pdf" onclick="descargarPDF()">📄 Descargar PDF</button>
       <button id="btn-word" class="btn btn-word" onclick="descargarWord()">📝 Descargar Word</button>
       <button id="btn-reset" class="btn btn-reset" onclick="resetData()" title="Restablecer">↺ Restablecer</button>
 
     </div>
   </header>
+
+  <!-- ── AI IMPORT MODAL ────────────────────────────────────────────────── -->
+  <div id="ai-import-modal" class="modal-overlay no-print" style="display:none"
+       role="dialog" aria-modal="true" aria-labelledby="ai-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="ai-modal-title">🤖 Importar CV con IA</h2>
+        <button class="modal-close" onclick="closeAiImportModal()" aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Security notice -->
+        <div class="ai-security-notice">
+          🔒 <strong>Privacidad:</strong> Tu API key <strong>NUNCA</strong> se almacena en ningún lugar.
+          Solo existe en la memoria del navegador durante el proceso y se borra automáticamente al terminar o al cerrar esta ventana.
+          Tu CV se envía directamente al proveedor de IA que selecciones; no pasa por ningún servidor intermediario.
+        </div>
+
+        <!-- File upload -->
+        <div class="modal-field">
+          <label for="ai-cv-file">📄 Archivo CV (PDF o DOCX — máx. 10 MB)</label>
+          <input type="file" id="ai-cv-file" accept=".pdf,.docx" onchange="onCVFileSelected(this)">
+          <div id="ai-file-info" class="ai-file-info"></div>
+        </div>
+
+        <!-- Provider selector -->
+        <div class="modal-field">
+          <label for="ai-provider">🤖 Proveedor de IA</label>
+          <select id="ai-provider" onchange="onProviderChange()">
+            <option value="openai">OpenAI (ChatGPT)</option>
+            <option value="claude">Claude (Anthropic)</option>
+            <option value="gemini">Gemini (Google)</option>
+            <option value="groq">Groq</option>
+          </select>
+        </div>
+
+        <!-- Model name -->
+        <div class="modal-field">
+          <label for="ai-model">🧠 Nombre del modelo</label>
+          <input type="text" id="ai-model" value="gpt-4o-mini"
+                 placeholder="gpt-4o-mini, gpt-4o, claude-3-5-haiku…">
+        </div>
+
+        <!-- API Key -->
+        <div class="modal-field">
+          <label for="ai-api-key">
+            🔑 API Key
+            <span class="api-key-note">(no se guarda — solo en memoria durante la importación)</span>
+          </label>
+          <div class="api-key-row">
+            <input type="password" id="ai-api-key" placeholder="sk-…" autocomplete="off"
+                   spellcheck="false" autocorrect="off" autocapitalize="off">
+            <button type="button" class="btn-eye" id="btn-eye"
+                    onclick="toggleApiKeyVisibility()" title="Mostrar/ocultar key">👁</button>
+          </div>
+        </div>
+
+        <!-- Status -->
+        <div id="ai-status" class="ai-status" style="display:none"></div>
+
+        <!-- Actions -->
+        <div class="modal-actions">
+          <button class="btn btn-ai-import" id="btn-ai-import" onclick="runAIImport()">
+            🚀 Importar CV
+          </button>
+          <button class="btn btn-secondary" onclick="closeAiImportModal()">Cancelar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <!-- ── MAIN LAYOUT ────────────────────────────────────────────────────── -->
   <div class="app-container">
@@ -50,6 +135,8 @@
   </div>
 
   <script src="data.js"></script>
+  <script src="photo-upload.js"></script>
+  <script src="ai-import.js"></script>
   <script src="app.js"></script>
 
 </body>
