@@ -13,38 +13,7 @@ body {
   color: #222;
 }
 
-/* ── Print ────────────────────────────────────────────────────────────────── */
-@media print {
-  .no-print {
-    display: none !important;
-  }
 
-  body {
-    background: #fff;
-  }
-
-  .app-container {
-    display: block;
-    height: auto;
-  }
-
-  .cv-panel {
-    overflow: visible;
-    height: auto;
-    background: #fff;
-    padding: 0;
-  }
-
-  .cv-preview-wrapper {
-    padding: 0;
-  }
-
-  .cv-preview {
-    box-shadow: none;
-    padding: 0;
-    max-width: 100%;
-  }
-}
 
 /* ── Toolbar ──────────────────────────────────────────────────────────────── */
 .toolbar {
@@ -1199,6 +1168,17 @@ body {
   }
 }
 
+
+
+/* section spacing inside right col */
+.cv-right .cv-sec-title {
+  margin-top: 28px;
+}
+
+.cv-right .cv-sec-title:first-child {
+  margin-top: 0;
+}
+
 @media print {
   .modal-overlay {
     display: none !important;
@@ -1209,11 +1189,35 @@ body {
   }
 }
 
-/* section spacing inside right col */
-.cv-right .cv-sec-title {
-  margin-top: 28px;
-}
+/* ── Print ────────────────────────────────────────────────────────────────── */
+@media print {
+  .no-print {
+    display: none !important;
+  }
 
-.cv-right .cv-sec-title:first-child {
-  margin-top: 0;
+  body {
+    background: #fff;
+  }
+
+  .app-container {
+    display: block;
+    height: auto;
+  }
+
+  .cv-panel {
+    overflow: visible;
+    height: auto;
+    background: #fff;
+    padding: 0;
+  }
+
+  .cv-preview-wrapper {
+    padding: 0;
+  }
+
+  .cv-preview {
+    box-shadow: none;
+    padding: 0;
+    max-width: 100%;
+  }
 }
