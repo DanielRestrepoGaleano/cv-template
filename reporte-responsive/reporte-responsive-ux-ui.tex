@@ -1,0 +1,195 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+\setstretch{1.15}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue,citecolor=black}
+
+\title{\textbf{Reporte Técnico UX/UI para Adaptación Responsive en Teléfonos}\\\large CV Builder (GitHub Pages)}
+\author{DanielRestrepoGaleano/cv-template}
+\date{06 de mayo de 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\vspace{0.5cm}
+\noindent\textbf{Objetivo del documento:} presentar, sin ejecutar cambios de código, el conjunto de ajustes necesarios de diseño UX/UI para que la aplicación web se adapte correctamente a teléfonos móviles, manteniendo su naturaleza estática sobre GitHub Pages.
+
+\vspace{0.8cm}
+\tableofcontents
+\newpage
+
+\section{Resumen ejecutivo}
+La aplicación cuenta con una base funcional sólida para escritorio y capacidades relevantes (editor, vista previa, exportaciones y módulos de IA), pero actualmente presenta una adaptación móvil parcial. El panel de chat ya tiene reglas responsive específicas, mientras que el layout principal (toolbar, editor lateral, vista de CV y densidad tipográfica) no está optimizado integralmente para pantallas pequeñas.
+
+Para lograr una experiencia móvil consistente, se requiere una estrategia \textit{mobile-first} que reorganice navegación, jerarquía visual, entradas de formulario y estructura de lectura del CV. Este reporte prioriza cambios de UX/UI en fases, define criterios de aceptación y propone una matriz de validación orientada a GitHub Pages (sitio estático, sin backend).
+
+\section{Contexto y alcance}
+\subsection{Contexto técnico}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Sitio estático desplegable en GitHub Pages.
+  \item Frontend en HTML, CSS y JavaScript vanilla.
+  \item Sin servidor propio para renderizado dinámico de interfaces.
+\end{itemize}
+
+\subsection{Alcance del reporte}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Identificar brechas actuales de adaptabilidad móvil.
+  \item Definir cambios necesarios de UX/UI (sin implementación).
+  \item Entregar backlog priorizado para ejecución futura.
+\end{itemize}
+
+\subsection{Fuera de alcance}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Cambios de código (HTML/CSS/JS).
+  \item Refactor de arquitectura de datos.
+  \item Cambios de hosting o infraestructura.
+\end{itemize}
+
+\section{Diagnóstico del estado actual (enfoque móvil)}
+\subsection{Hallazgos principales}
+\begin{enumerate}[leftmargin=1.2cm]
+  \item \textbf{Layout principal no mobile-first:} la app mantiene un esquema de escritorio con panel lateral fijo y vista principal de CV, sin una transición estructural completa para teléfonos.
+  \item \textbf{Toolbar densa para pantallas pequeñas:} alta cantidad de acciones en la cabecera, con riesgo de saturación visual, wraps incómodos y dificultad de toque.
+  \item \textbf{Vista previa de CV con estructura compleja para móvil:} composición tipo dos columnas y tipografías pensadas para escritorio; la lectura en ancho reducido pierde escaneo rápido.
+  \item \textbf{Formularios extensos con alta carga cognitiva:} en móvil faltan patrones de progresión por bloques (pasos/acordeones/secciones compactas) para edición eficiente.
+  \item \textbf{Cobertura responsive parcial:} el módulo de chat sí contempla breakpoints, pero el resto de la interfaz no presenta el mismo nivel de adaptación.
+\end{enumerate}
+
+\subsection{Impacto UX estimado}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Mayor tiempo para completar/editar CV desde teléfono.
+  \item Incremento en errores de interacción (toques imprecisos, scroll excesivo).
+  \item Reducción de legibilidad y percepción de calidad visual en móvil.
+\end{itemize}
+
+\section{Objetivos UX/UI para móvil}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Garantizar usabilidad completa en anchos de 320--430 px.
+  \item Simplificar navegación y priorizar acciones clave.
+  \item Mejorar legibilidad, ritmo visual y accesibilidad táctil.
+  \item Mantener consistencia con experiencia escritorio y exportaciones.
+\end{itemize}
+
+\section{Cambios necesarios de diseño UX/UI}
+\subsection{1) Navegación y arquitectura de información}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Reemplazar la toolbar saturada por una navegación en capas: acciones primarias visibles y acciones secundarias en menú contextual.
+  \item Definir una jerarquía de acciones móvil: \textit{Editar}, \textit{Vista previa}, \textit{Exportar} y \textit{IA}.
+  \item Incluir un patrón de navegación persistente de bajo costo cognitivo (por ejemplo, barra inferior o tabs compactas).
+\end{itemize}
+
+\subsection{2) Estructura del layout principal}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Migrar de layout lateral de escritorio a flujo vertical móvil.
+  \item Evitar presentar editor y preview simultáneamente en pantallas pequeñas; usar conmutación clara entre vistas.
+  \item Reducir dependencias de altura fija para prevenir conflictos con barras del navegador móvil.
+\end{itemize}
+
+\subsection{3) Experiencia de edición en formularios}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Introducir secciones colapsables para disminuir longitud percibida.
+  \item Estandarizar tamaños táctiles (alto mínimo de controles y botones) para interacción cómoda con pulgar.
+  \item Mejorar separación visual entre grupos de campos y acciones de agregar/eliminar ítems repetibles.
+\end{itemize}
+
+\subsection{4) Vista previa del CV en teléfono}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Definir versión de lectura móvil con prioridad de contenido, no réplica literal del lienzo de escritorio.
+  \item Revisar estructura de columnas para lectura lineal en móvil.
+  \item Ajustar escala tipográfica y espaciados para mantener contraste y escaneo rápido.
+\end{itemize}
+
+\subsection{5) Modales y componentes flotantes}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Unificar comportamiento de modales en móvil (alto máximo, scroll interno, botón de cierre siempre visible).
+  \item Validar que paneles flotantes (como chat) no bloqueen acciones críticas ni campos en foco.
+  \item Asegurar consistencia de patrones de interacción entre módulos (IA import, chat settings, ATS).
+\end{itemize}
+
+\subsection{6) Accesibilidad y ergonomía móvil}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Asegurar objetivos táctiles mínimos y separación adecuada entre controles.
+  \item Garantizar contraste visual y legibilidad de etiquetas, estados y mensajes.
+  \item Mejorar estados de foco/teclado para inputs en contextos de pantalla reducida.
+\end{itemize}
+
+\subsection{7) Rendimiento percibido en GitHub Pages}
+\begin{itemize}[leftmargin=1.2cm]
+  \item Priorizar carga inicial ligera para red móvil.
+  \item Minimizar bloqueos de interfaz por procesos no esenciales en primer render.
+  \item Preservar un flujo usable incluso con latencia alta o dispositivos de gama media.
+\end{itemize}
+
+\section{Backlog priorizado de implementación futura}
+\subsection{Prioridad alta (P0)}
+\begin{enumerate}[leftmargin=1.2cm]
+  \item Rediseño de navegación móvil y simplificación de toolbar.
+  \item Reestructuración del layout principal para flujo vertical con conmutación editor/preview.
+  \item Ajuste de legibilidad base (tipografía, espaciados, densidad) para anchos de teléfono.
+\end{enumerate}
+
+\subsection{Prioridad media (P1)}
+\begin{enumerate}[leftmargin=1.2cm]
+  \item Reorganización de formularios con secciones colapsables.
+  \item Optimización de modales para pantallas pequeñas.
+  \item Homologación de patrones entre módulos de IA y ATS.
+\end{enumerate}
+
+\subsection{Prioridad baja (P2)}
+\begin{enumerate}[leftmargin=1.2cm]
+  \item Microinteracciones y refinamientos visuales.
+  \item Mejora incremental de rendimiento percibido y estados vacíos/mensajes.
+\end{enumerate}
+
+\section{Criterios de aceptación UX/UI}
+Se considera que la aplicación está adaptada a teléfono cuando:
+\begin{itemize}[leftmargin=1.2cm]
+  \item Todas las tareas críticas (editar, revisar, exportar) pueden completarse con una mano y sin zoom.
+  \item No hay desbordes horizontales en 320 px, 360 px y 390 px.
+  \item El tiempo de localización de acciones primarias disminuye de forma perceptible frente al estado actual.
+  \item La lectura del CV en móvil mantiene claridad de jerarquía y continuidad narrativa.
+\end{itemize}
+
+\section{Matriz mínima de validación sugerida}
+\begin{center}
+\begin{tabular}{@{}p{3.2cm}p{4.2cm}p{6.6cm}@{}}
+\toprule
+\textbf{Dispositivo} & \textbf{Navegador} & \textbf{Escenarios a validar} \\
+\midrule
+320x568 & Chrome Android & Navegación principal, edición de campos largos, apertura/cierre de modales \\
+360x800 & Chrome Android & Flujo completo: editar $\rightarrow$ preview $\rightarrow$ exportar \\
+390x844 & Safari iOS & Teclado móvil, foco en inputs, paneles flotantes y legibilidad general \\
+412x915 & Chrome Android & Formularios con múltiples ítems y comportamiento de scroll \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Riesgos y mitigaciones}
+\begin{itemize}[leftmargin=1.2cm]
+  \item \textbf{Riesgo:} introducir inconsistencia entre escritorio y móvil.\\
+  \textbf{Mitigación:} definir tokens visuales y reglas de diseño compartidas.
+  \item \textbf{Riesgo:} degradar experiencia de exportación al cambiar jerarquías visuales.\\
+  \textbf{Mitigación:} separar claramente vista de edición móvil y estilos de salida (PDF/Word/ATS).
+  \item \textbf{Riesgo:} complejidad de interacción por exceso de acciones simultáneas.\\
+  \textbf{Mitigación:} priorización funcional estricta y progressive disclosure.
+\end{itemize}
+
+\section{Conclusión}
+La aplicación puede adaptarse exitosamente a teléfonos sin abandonar su modelo estático en GitHub Pages. El principal trabajo requerido no es de infraestructura, sino de rediseño UX/UI orientado a móvil: simplificar navegación, reorganizar layout, mejorar legibilidad y estandarizar componentes interactivos. Con el backlog propuesto, se puede ejecutar una transición ordenada y medible hacia una experiencia móvil profesional.
+
+\vspace{0.7cm}
+\noindent\textbf{Nota:} este entregable corresponde exclusivamente a un reporte técnico. No se realizaron cambios funcionales en la aplicación.
+
+\end{document}
