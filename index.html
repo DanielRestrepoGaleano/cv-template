@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" id="html-root">
+<html lang="en" id="html-root">
 
 <head>
   <meta charset="UTF-8" />
@@ -37,11 +37,12 @@
       </form>
 
       <button id="btn-toggle-editor" class="btn btn-secondary" onclick="toggleEditor()">◀ Editor</button>
-      <button id="btn-lang" class="btn btn-lang" onclick="toggleLang()">🌐 ES → EN</button>
-      <button id="btn-ai" class="btn btn-ai" onclick="openAiImportModal()">🤖 Importar CV con IA</button>
-      <button id="btn-pdf" class="btn btn-pdf" onclick="descargarPDF()">📄 Descargar PDF</button>
-      <button id="btn-word" class="btn btn-word" onclick="descargarWord()">📝 Descargar Word</button>
-      <button id="btn-reset" class="btn btn-reset" onclick="resetData()" title="Restablecer">↺ Restablecer</button>
+      <button id="btn-lang" class="btn btn-lang" onclick="toggleLang()">🌐 EN → ES</button>
+      <button id="btn-ai" class="btn btn-ai" onclick="openAiImportModal()">🤖 Import CV with AI</button>
+      <button id="btn-chat" class="btn btn-chat" onclick="toggleChatPanel()">💬 AI Chat</button>
+      <button id="btn-pdf" class="btn btn-pdf" onclick="descargarPDF()">📄 Download PDF</button>
+      <button id="btn-word" class="btn btn-word" onclick="descargarWord()">📝 Download Word</button>
+      <button id="btn-reset" class="btn btn-reset" onclick="resetData()" title="Reset">↺ Reset</button>
 
     </div>
   </header>
@@ -51,28 +52,28 @@
        role="dialog" aria-modal="true" aria-labelledby="ai-modal-title">
     <div class="modal-box">
       <div class="modal-header">
-        <h2 id="ai-modal-title">🤖 Importar CV con IA</h2>
-        <button class="modal-close" onclick="closeAiImportModal()" aria-label="Cerrar">×</button>
+        <h2 id="ai-modal-title">🤖 Import CV with AI</h2>
+        <button class="modal-close" id="btn-ai-close" onclick="closeAiImportModal()" aria-label="Close">×</button>
       </div>
       <div class="modal-body">
 
         <!-- Security notice -->
-        <div class="ai-security-notice">
-          🔒 <strong>Privacidad:</strong> Tu API key <strong>NUNCA</strong> se almacena en ningún lugar.
-          Solo existe en la memoria del navegador durante el proceso y se borra automáticamente al terminar o al cerrar esta ventana.
-          Tu CV se envía directamente al proveedor de IA que selecciones; no pasa por ningún servidor intermediario.
+        <div class="ai-security-notice" id="ai-security-notice">
+          🔒 <strong>Privacy:</strong> Your API key is <strong>NEVER</strong> stored anywhere.
+          It only exists in browser memory during the process and is automatically cleared when finished or when you close this window.
+          Your CV is sent directly to the AI provider you choose; it does not go through any intermediate server.
         </div>
 
         <!-- File upload -->
         <div class="modal-field">
-          <label for="ai-cv-file">📄 Archivo CV (PDF o DOCX — máx. 10 MB)</label>
+          <label for="ai-cv-file" id="ai-file-label">📄 CV file (PDF or DOCX — max. 10 MB)</label>
           <input type="file" id="ai-cv-file" accept=".pdf,.docx" onchange="onCVFileSelected(this)">
           <div id="ai-file-info" class="ai-file-info"></div>
         </div>
 
         <!-- Provider selector -->
         <div class="modal-field">
-          <label for="ai-provider">🤖 Proveedor de IA</label>
+          <label for="ai-provider" id="ai-provider-label">🤖 AI provider</label>
           <select id="ai-provider" onchange="onProviderChange()">
             <option value="openai">OpenAI (ChatGPT)</option>
             <option value="claude">Claude (Anthropic)</option>
@@ -83,7 +84,7 @@
 
         <!-- Model name -->
         <div class="modal-field">
-          <label for="ai-model">🧠 Nombre del modelo</label>
+          <label for="ai-model" id="ai-model-label">🧠 Model name</label>
           <input type="text" id="ai-model" value="gpt-4o-mini"
                  placeholder="gpt-4o-mini, gpt-4o, claude-3-5-haiku…">
         </div>
@@ -92,13 +93,13 @@
         <div class="modal-field">
           <label for="ai-api-key">
             🔑 API Key
-            <span class="api-key-note">(no se guarda — solo en memoria durante la importación)</span>
+            <span class="api-key-note" id="ai-api-note">(memory only during import)</span>
           </label>
           <div class="api-key-row">
             <input type="password" id="ai-api-key" placeholder="sk-…" autocomplete="off"
                    spellcheck="false" autocorrect="off" autocapitalize="off">
             <button type="button" class="btn-eye" id="btn-eye"
-                    onclick="toggleApiKeyVisibility()" title="Mostrar/ocultar key">👁</button>
+                    onclick="toggleApiKeyVisibility()" title="Show/hide key">👁</button>
           </div>
         </div>
 
@@ -108,9 +109,9 @@
         <!-- Actions -->
         <div class="modal-actions">
           <button class="btn btn-ai-import" id="btn-ai-import" onclick="runAIImport()">
-            🚀 Importar CV
+            🚀 Import CV
           </button>
-          <button class="btn btn-secondary" onclick="closeAiImportModal()">Cancelar</button>
+          <button class="btn btn-secondary" id="btn-ai-cancel" onclick="closeAiImportModal()">Cancel</button>
         </div>
 
       </div>
@@ -133,6 +134,76 @@
     </main>
 
   </div>
+
+  <!-- ── AI CHAT PANEL ─────────────────────────────────────────────────── -->
+  <section id="chat-panel" class="chat-panel no-print collapsed" aria-hidden="true">
+    <div class="chat-panel-header">
+      <div class="chat-panel-title-wrap">
+        <p class="chat-panel-title" id="chat-panel-title">💬 Chat about your CV</p>
+        <p class="chat-panel-subtitle" id="chat-panel-subtitle">
+          Ask about strengths, improvements, gaps or career focus.
+        </p>
+      </div>
+      <div class="chat-panel-header-actions">
+        <button type="button" class="btn btn-chat-help" id="btn-chat-help" onclick="toggleChatHelp()" aria-label="Chat help">?</button>
+        <button type="button" class="btn btn-chat-clear" id="btn-chat-clear" onclick="clearChatMessages()">Clear chat</button>
+        <button type="button" class="modal-close chat-close" id="btn-chat-close" onclick="toggleChatPanel(false)" aria-label="Close chat">×</button>
+      </div>
+    </div>
+
+    <div class="chat-panel-body">
+      <div class="chat-help" id="chat-help" hidden>
+        🔎 <span id="chat-help-text">This chat reads the CV visible on the page. You can hide or show advanced options without losing the conversation.</span>
+      </div>
+
+      <div class="chat-advanced-shell">
+        <button type="button" class="chat-advanced-toggle" id="chat-advanced-summary" onclick="toggleChatAdvanced()">Advanced options</button>
+        <div class="chat-settings" id="chat-settings" hidden>
+          <div class="modal-field">
+            <label for="chat-provider" id="chat-provider-label">🤖 AI provider</label>
+            <select id="chat-provider" onchange="onChatProviderChange()">
+              <option value="openai">OpenAI (ChatGPT)</option>
+              <option value="claude">Claude (Anthropic)</option>
+              <option value="gemini">Gemini (Google)</option>
+              <option value="groq">Groq</option>
+            </select>
+          </div>
+
+          <div class="modal-field">
+            <label for="chat-model" id="chat-model-label">🧠 Model name</label>
+            <input type="text" id="chat-model" value="gpt-4o-mini"
+                   placeholder="gpt-4o-mini, gpt-4o, claude-3-5-haiku…">
+          </div>
+
+          <div class="modal-field">
+            <label for="chat-api-key">
+              🔑 API Key
+              <span class="api-key-note" id="chat-api-note">(memory only while the chat stays open)</span>
+            </label>
+            <div class="api-key-row">
+              <input type="password" id="chat-api-key" placeholder="sk-…" autocomplete="off"
+                     spellcheck="false" autocorrect="off" autocapitalize="off">
+              <button type="button" class="btn-eye" id="btn-chat-eye"
+                      onclick="toggleChatApiKeyVisibility()" title="Show/hide key">👁</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-security-notice" id="chat-security-notice">
+        🔒 <strong>Privacy:</strong> Your API key is not saved to localStorage or any server.
+        It only lives in memory during this session and you can close it whenever you want.
+      </div>
+
+      <div id="chat-status" class="chat-status" style="display:none"></div>
+      <div id="chat-messages" class="chat-messages" aria-live="polite"></div>
+
+      <div class="chat-composer">
+        <textarea id="chat-input" rows="3" placeholder="Write your question about the CV…" onkeydown="handleChatComposerKeydown(event)"></textarea>
+        <button type="button" class="btn btn-chat-send" id="btn-chat-send" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+  </section>
 
   <script src="data.js"></script>
   <script src="photo-upload.js"></script>

@@ -1,7 +1,7 @@
 'use strict';
 
 /* ── Global State ─────────────────────────────────────────────────────────── */
-let currentLang = 'es';
+let currentLang = 'en';
 let cvData;
 
 /* ── Helpers ──────────────────────────────────────────────────────────────── */
@@ -61,10 +61,15 @@ function updateToolbar() {
   document.getElementById('btn-toggle-editor').textContent =
     editorVisible ? ui.botones.mostrarEditor : ui.botones.ocultarEditor;
   document.getElementById('btn-lang').textContent  = ui.botones.lang;
+  document.getElementById('btn-ai').textContent    = ui.ai.import.button;
+  document.getElementById('btn-chat').textContent  = ui.ai.chat.button;
   document.getElementById('btn-pdf').textContent   = ui.botones.pdf;
   document.getElementById('btn-word').textContent  = ui.botones.word;
   document.getElementById('btn-reset').title       = ui.botones.reset;
   document.getElementById('btn-reset').textContent = ui.botones.reset;
+
+  if (typeof syncAiLanguageUI === 'function') syncAiLanguageUI();
+  if (typeof syncChatLanguageUI === 'function') syncChatLanguageUI();
 }
 
 function toggleEditor() {
@@ -519,6 +524,87 @@ function renderCV() {
       </tr>
     </table>`;
 }
+
+function buildCvSnapshot(lang = currentLang) {
+  const d = cvData[lang];
+  const ui = uiLabels[lang];
+  const sec = ui.secciones;
+
+  const lines = [];
+  lines.push(`Language: ${lang === 'es' ? 'Spanish' : 'English'}`);
+  lines.push(`Name: ${d.nombre}`);
+  lines.push(`Role: ${d.profesion}`);
+  lines.push('');
+
+  if (d.contacto && (d.contacto.direccion || d.contacto.telefono || d.contacto.email)) {
+    lines.push(sec.detalles.toUpperCase());
+    if (d.contacto.direccion) {
+      lines.push(`Address: ${String(d.contacto.direccion).replace(/\n/g, ' | ')}`);
+    }
+    if (d.contacto.telefono) lines.push(`Phone: ${d.contacto.telefono}`);
+    if (d.contacto.email) lines.push(`Email: ${d.contacto.email}`);
+    lines.push('');
+  }
+
+  const activeLinks = (d.links || []).filter(lk => lk.label || lk.url);
+  if (activeLinks.length) {
+    lines.push(sec.enlaces.toUpperCase());
+    activeLinks.forEach(function (lk) {
+      lines.push(`- ${lk.label}: ${lk.url}`.trim());
+    });
+    lines.push('');
+  }
+
+    if (typeof loadChatState === 'function') loadChatState();
+  if (d.perfil) {
+    lines.push(sec.perfil.toUpperCase());
+    lines.push(d.perfil);
+    lines.push('');
+  }
+
+  const activeSkills = (d.habilidades || []).filter(sk => sk.categoria || sk.tecnologias);
+  if (activeSkills.length) {
+    lines.push(sec.habilidades.toUpperCase());
+    activeSkills.forEach(function (sk) {
+      lines.push(`- ${sk.categoria}: ${sk.tecnologias}`.trim());
+    });
+    lines.push('');
+  }
+
+  const activeExp = (d.experiencia || []).filter(e => e.cargo);
+  if (activeExp.length) {
+    lines.push(sec.experiencia.toUpperCase());
+    activeExp.forEach(function (exp) {
+      lines.push(`- ${[exp.cargo, exp.ubicacion, exp.fecha].filter(Boolean).join(' | ')}`);
+      if (exp.descripcion) lines.push(`  Summary: ${exp.descripcion}`);
+      (exp.logros || []).filter(Boolean).forEach(function (item) {
+        lines.push(`  * ${item}`);
+      });
+    });
+    lines.push('');
+  }
+
+  const activeEdu = (d.educacion || []).filter(e => e.titulo);
+  if (activeEdu.length) {
+    lines.push(sec.educacion.toUpperCase());
+    activeEdu.forEach(function (edu) {
+      lines.push(`- ${[edu.titulo, edu.institucion, edu.fecha].filter(Boolean).join(' | ')}`);
+    });
+    lines.push('');
+  }
+
+  const activeCerts = (d.certificaciones || []).filter(Boolean);
+  if (activeCerts.length) {
+    lines.push(sec.certificaciones.toUpperCase());
+    activeCerts.forEach(function (cert) {
+      lines.push(`- ${cert}`);
+    });
+  }
+
+  return lines.join('\n').trim();
+}
+
+window.getCurrentCvSnapshot = buildCvSnapshot;
 
 /* ── PDF Export ───────────────────────────────────────────────────────────── */
 
