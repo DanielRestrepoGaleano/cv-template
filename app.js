@@ -63,6 +63,7 @@ function updateToolbar() {
   document.getElementById('btn-chat').textContent = ui.ai.chat.button;
   document.getElementById('btn-pdf').textContent = ui.botones.pdf;
   document.getElementById('btn-word').textContent = ui.botones.word;
+  document.getElementById('btn-ats').textContent = ui.botones.ats;
   document.getElementById('btn-reset').title = ui.botones.reset;
   document.getElementById('btn-reset').textContent = ui.botones.reset;
 
@@ -502,6 +503,156 @@ async function descargarWord() {
   const blob = await Packer.toBlob(doc); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = d.nombre.replace(/\s+/g, '_') + '_CV.docx'; a.click(); URL.revokeObjectURL(url);
 }
 
+async function descargarATS() {
+  const { Document, Packer, Paragraph, TextRun, AlignmentType, ExternalHyperlink, UnderlineType } = docx;
+  const d = cvData[currentLang];
+  const FONT = 'Calibri';
+  const C_DARK = '222222';
+  const C_GRAY = '666666';
+
+  const secHeading = (text) => new Paragraph({
+    spacing: { before: 240, after: 80 },
+    children: [new TextRun({ text: text, bold: true, size: 28, font: FONT, color: C_DARK })]
+  });
+
+  const normalBody = (text, isBold = false) => new Paragraph({
+    spacing: { before: 0, after: 100 },
+    children: [new TextRun({ text: text || '', size: 22, font: FONT, color: C_GRAY, bold: isBold })]
+  });
+
+  const jobTitle = (title, loc) => new Paragraph({
+    spacing: { before: 120, after: 40 },
+    children: [
+      new TextRun({ text: title, bold: true, size: 22, font: FONT, color: C_DARK }),
+      ...(loc ? [new TextRun({ text: ' | ' + loc, size: 22, font: FONT, color: C_GRAY })] : [])
+    ]
+  });
+
+  const dateP = (text) => new Paragraph({
+    spacing: { before: 0, after: 80 },
+    children: [new TextRun({ text: text, italics: true, size: 22, font: FONT, color: C_GRAY })]
+  });
+
+  const dashBullet = (text) => new Paragraph({
+    spacing: { before: 40, after: 40 },
+    children: [new TextRun({ text: '- ' + text, size: 22, font: FONT, color: C_GRAY })]
+  });
+
+  const link = (label, url) => new Paragraph({
+    spacing: { before: 40, after: 40 },
+    children: [new ExternalHyperlink({
+      link: url,
+      children: [new TextRun({ text: label, size: 22, font: FONT, color: '0563c1', underline: { type: UnderlineType.SINGLE } })]
+    })]
+  });
+
+  const children = [];
+
+  // Header
+  children.push(new Paragraph({
+    spacing: { before: 0, after: 40 },
+    children: [new TextRun({ text: d.nombre, bold: true, size: 32, font: FONT, color: C_DARK })]
+  }));
+  children.push(normalBody(d.profesion));
+  children.push(normalBody(''));
+
+  // Contact Information
+  children.push(secHeading(ATS_STANDARD_TITLES.detalles));
+  if (d.contacto.direccion) {
+    d.contacto.direccion.split('\n').filter(l => l.trim()).forEach(l => children.push(normalBody(l.trim())));
+  }
+  if (d.contacto.telefono) {
+    children.push(normalBody(d.contacto.telefono));
+  }
+  if (d.contacto.email) {
+    children.push(normalBody(d.contacto.email));
+  }
+  children.push(normalBody(''));
+
+  // Links
+  const activeLinks = d.links.filter(lk => lk.label || lk.url);
+  if (activeLinks.length) {
+    children.push(secHeading(ATS_STANDARD_TITLES.enlaces));
+    activeLinks.forEach(lk => {
+      if (lk.url) {
+        children.push(link(lk.label || lk.url, lk.url));
+      } else if (lk.label) {
+        children.push(normalBody(lk.label));
+      }
+    });
+    children.push(normalBody(''));
+  }
+
+  // Professional Profile
+  if (isSectionVisible('perfil') && d.perfil) {
+    children.push(secHeading(ATS_STANDARD_TITLES.perfil));
+    children.push(normalBody(d.perfil));
+    children.push(normalBody(''));
+  }
+
+  // Work Experience
+  const activeExp = d.experiencia.filter(e => e.cargo);
+  if (activeExp.length && isSectionVisible('experiencia')) {
+    children.push(secHeading(ATS_STANDARD_TITLES.experiencia));
+    activeExp.forEach((exp, i) => {
+      children.push(jobTitle(exp.cargo, exp.ubicacion));
+      if (exp.fecha) children.push(dateP(exp.fecha));
+      if (exp.descripcion) children.push(normalBody(exp.descripcion));
+      (exp.logros || []).filter(l => l.trim()).forEach(l => children.push(dashBullet(l)));
+      if (i < activeExp.length - 1) children.push(normalBody(''));
+    });
+    children.push(normalBody(''));
+  }
+
+  // Education
+  const activeEdu = d.educacion.filter(e => e.titulo);
+  if (activeEdu.length && isSectionVisible('educacion')) {
+    children.push(secHeading(ATS_STANDARD_TITLES.educacion));
+    activeEdu.forEach(edu => {
+      children.push(normalBody(edu.titulo, true));
+      children.push(normalBody(edu.institucion + (edu.fecha ? ' | ' + edu.fecha : '')));
+    });
+    children.push(normalBody(''));
+  }
+
+  // Skills
+  const activeSkills = d.habilidades.filter(sk => sk.categoria || sk.tecnologias);
+  if (activeSkills.length && isSectionVisible('habilidades')) {
+    children.push(secHeading(ATS_STANDARD_TITLES.habilidades));
+    activeSkills.forEach(sk => {
+      children.push(normalBody(sk.categoria + ': ' + sk.tecnologias));
+    });
+    children.push(normalBody(''));
+  }
+
+  // Certifications
+  const activeCerts = d.certificaciones.filter(c => c.trim());
+  if (activeCerts.length && isSectionVisible('certificaciones')) {
+    children.push(secHeading(ATS_STANDARD_TITLES.certificaciones));
+    activeCerts.forEach(c => children.push(dashBullet(c)));
+  }
+
+  const doc = new Document({
+    sections: [{
+      properties: {
+        page: {
+          size: { width: 11906, height: 16838 },
+          margin: { top: 720, right: 720, bottom: 720, left: 720 }
+        }
+      },
+      children: children
+    }]
+  });
+
+  const blob = await Packer.toBlob(doc);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = d.nombre.replace(/\s+/g, '_') + '_CV_ATS.docx';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 function resetData() {
   if (!window.confirm(uiLabels[currentLang].confirmarReset)) return;
   cvData = JSON.parse(JSON.stringify(defaultCVData));
@@ -531,4 +682,30 @@ function init() {
   renderForm();
   renderCV();
 }
+
+/* ── ATS Modal Functions ──────────────────────────────────────────────────── */
+
+function openAtsModal() {
+  const shown = localStorage.getItem('ats-warning-shown');
+  if (shown === 'true') {
+    descargarATS();
+  } else {
+    document.getElementById('ats-modal').style.display = 'flex';
+  }
+}
+
+function closeAtsModal() {
+  document.getElementById('ats-modal').style.display = 'none';
+}
+
+function closeAtsModalAndDownload() {
+  closeAtsModal();
+  descargarATS();
+}
+
+function toggleAtsWarningPreference() {
+  const checkbox = document.getElementById('ats-no-show-again');
+  localStorage.setItem('ats-warning-shown', checkbox.checked ? 'true' : 'false');
+}
+
 window.addEventListener('DOMContentLoaded', init);

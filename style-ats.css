@@ -1,0 +1,113 @@
+/* ── ATS Modal Styles ─────────────────────────────────────────────────────── */
+
+.ats-info-box {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #0c4a6e;
+  margin-bottom: 12px;
+}
+
+.ats-info-box h3 {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #0c4a6e;
+}
+
+.ats-info-box ul {
+  margin: 0;
+  padding-left: 16px;
+  line-height: 1.6;
+}
+
+.ats-warning-box {
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #78350f;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.ats-validation-box {
+  background: #f3e8ff;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #5b21b6;
+  margin-bottom: 12px;
+}
+
+.ats-validation-box p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.ats-validation-box a {
+  color: #5b21b6;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.ats-validation-box a:hover {
+  color: #7c3aed;
+}
+
+.ats-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+  font-size: 12px;
+}
+
+.ats-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.ats-checkbox label {
+  cursor: pointer;
+  color: #555;
+  margin: 0;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: #fff;
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #333;
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-secondary:hover {
+  background: #d1d5db;
+}

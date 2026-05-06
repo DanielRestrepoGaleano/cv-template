@@ -12,6 +12,7 @@
   <!-- DOCX text extraction (JSZip) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style-ats.css" />
   <script>
     // Configure pdf.js worker URL (must run before the library is used)
     document.addEventListener('DOMContentLoaded', function () {
@@ -42,6 +43,7 @@
       <button id="btn-chat" class="btn btn-chat" onclick="toggleChatPanel()">💬 AI Chat</button>
       <button id="btn-pdf" class="btn btn-pdf" onclick="descargarPDF()">📄 Download PDF</button>
       <button id="btn-word" class="btn btn-word" onclick="descargarWord()">📝 Download Word</button>
+      <button id="btn-ats" class="btn btn-ats" onclick="openAtsModal()">📋 Download ATS</button>
       <button id="btn-reset" class="btn btn-reset" onclick="resetData()" title="Reset">↺ Reset</button>
 
     </div>
@@ -229,6 +231,66 @@
       </div>
     </div>
   </section>
+
+  <!-- ── ATS EXPORT MODAL ───────────────────────────────────────────────── -->
+  <div id="ats-modal" class="modal-overlay no-print" style="display:none" role="dialog" aria-modal="true"
+    aria-labelledby="ats-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="ats-modal-title">📋 ATS Format Export</h2>
+        <button class="modal-close" onclick="closeAtsModal()" aria-label="Close">×</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- What is ATS? -->
+        <div class="ats-info-box">
+          <h3>What is ATS Format?</h3>
+          <p>
+            ATS (Applicant Tracking System) format is a clean, text-based layout designed to be easily parsed by 
+            automated recruitment systems. It features:
+          </p>
+          <ul>
+            <li><strong>Linear layout:</strong> Single column, no tables or complex formatting</li>
+            <li><strong>Simple structure:</strong> No special characters, decorative elements, or images</li>
+            <li><strong>Clear sections:</strong> Standard English headings for automatic detection</li>
+            <li><strong>Plain text:</strong> Maximum compatibility with all ATS parsers</li>
+          </ul>
+        </div>
+
+        <!-- Key Warning -->
+        <div class="ats-warning-box">
+          <strong>⚠️ Important:</strong> Section titles will be automatically set to standard English names 
+          (e.g., WORK EXPERIENCE, EDUCATION, SKILLS) regardless of any custom titles you've set. This ensures 
+          correct recognition by ATS systems.
+        </div>
+
+        <!-- Validation Link -->
+        <div class="ats-validation-box">
+          <p>
+            After downloading, validate your CV with a free ATS checker:
+            <a href="https://resumeworded.com/" target="_blank" rel="noopener noreferrer">
+              ResumeWorded.com
+            </a>
+          </p>
+        </div>
+
+        <!-- Do Not Show Again Checkbox -->
+        <div class="ats-checkbox">
+          <input type="checkbox" id="ats-no-show-again" onchange="toggleAtsWarningPreference()">
+          <label for="ats-no-show-again">Don't show this message again</label>
+        </div>
+
+        <!-- Actions -->
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="btn-ats-download" onclick="closeAtsModalAndDownload()">
+            📥 Download Now
+          </button>
+          <button class="btn btn-secondary" onclick="closeAtsModal()">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <script src="data.js"></script>
   <script src="photo-upload.js"></script>

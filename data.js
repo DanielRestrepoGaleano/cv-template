@@ -8,9 +8,9 @@ const uiLabels = {
       enlaces: 'Enlaces',
       habilidades: 'Habilidades',
       perfil: 'Perfil Profesional',
-      experiencia: 'Experiencia Laboral / Proyectos',
+      experiencia: 'Experiencia Laboral',
       educacion: 'Educación',
-      certificaciones: 'Cursos y Certificaciones'
+      certificaciones: 'Certificaciones'
     },
     form: {
       titulo: 'Editar CV',
@@ -50,6 +50,7 @@ const uiLabels = {
       lang: '🌐 ES → EN',
       pdf: '📄 Descargar PDF',
       word: '📝 Descargar Word',
+      ats: '📋 Descargar ATS',
       reset: '↺ Restablecer'
     },
     confirmarReset: '¿Restablecer todos los datos de ejemplo? Se perderán los cambios no guardados.',
@@ -126,9 +127,9 @@ const uiLabels = {
       enlaces: 'Links',
       habilidades: 'Skills',
       perfil: 'Professional Profile',
-      experiencia: 'Work Experience / Projects',
+      experiencia: 'Work Experience',
       educacion: 'Education',
-      certificaciones: 'Courses & Certifications'
+      certificaciones: 'Certifications'
     },
     form: {
       titulo: 'Edit CV',
@@ -168,6 +169,7 @@ const uiLabels = {
       lang: '🌐 EN → ES',
       pdf: '📄 Download PDF',
       word: '📝 Download Word',
+      ats: '📋 Download ATS',
       reset: '↺ Reset'
     },
     confirmarReset: 'Reset all data to example defaults? Unsaved changes will be lost.',
@@ -396,4 +398,15 @@ const defaultCVData = {
       certificaciones: { visible: true, titulo: '' }
     }
   }
+};
+
+/* ── ATS Standard Titles (fixed, language-independent) ────────────────────── */
+const ATS_STANDARD_TITLES = {
+  detalles: 'CONTACT INFORMATION',
+  enlaces: 'LINKS',
+  habilidades: 'SKILLS',
+  perfil: 'PROFESSIONAL PROFILE',
+  experiencia: 'WORK EXPERIENCE',
+  educacion: 'EDUCATION',
+  certificaciones: 'CERTIFICATIONS'
 };
